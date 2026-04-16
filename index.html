@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auditoria & Otimização HVSB | Sigma</title>
+<link rel="icon" type="image/svg+xml" href="https://static.wixstatic.com/shapes/167cba_c76d768559744f90b364541c6ff3aa51.svg">
+<link rel="shortcut icon" href="https://static.wixstatic.com/shapes/167cba_c76d768559744f90b364541c6ff3aa51.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Allura&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Paleta inspirada no Instagram do HVSB */
+  --navy-deep:    #0A3D5F;   /* navy mais escuro - background principal */
+  --navy:         #0E5C8C;   /* azul médio do hospital - principal */
+  --blue:         #1B6FB8;   /* azul médio mais saturado - acentos */
+  --blue-light:   #A9D6E8;   /* azul claro do escudo/logo */
+  --blue-soft:    #D4E9F2;   /* azul muito claro - sutil */
+  --gold:         #D4A340;   /* dourado dos badges 57 anos */
+  --gold-light:   #E8C77B;   /* dourado claro */
+  --white:        #FFFFFF;
+  --cream:        #FAF8F3;   /* off-white */
+  --gray:         #6B7280;
+  --red:          #C44545;   /* vermelho discreto pra alertas */
+  --green:        #4A9B7E;   /* verde discreto pra sucesso */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  background: var(--navy-deep);
+  color: var(--white);
+}
+
+.deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 5rem;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 60%, #061F33 100%);
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+
+.slide.prev { transform: translateX(-50px); }
+
+/* Tipografia - Montserrat para títulos (com peso forte tipo Instagram), Allura pra script */
+h1, h2, h3, h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+h1 { font-size: clamp(2.8rem, 5.5vw, 5rem); }
+h2 { font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 1.5rem; }
+h3 { font-size: clamp(1.5rem, 2.5vw, 2.2rem); margin-bottom: 1rem; }
+h4 { font-size: clamp(1.05rem, 1.6vw, 1.4rem); margin-bottom: 0.5rem; }
+
+.script {
+  font-family: 'Allura', cursive;
+  text-transform: none;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0;
+  color: var(--blue-light);
+}
+
+p {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.65;
+  color: rgba(255,255,255,0.88);
+  font-weight: 400;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background: var(--blue);
+  color: white;
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--blue-light);
+}
+.tag.gold { background: var(--gold); color: var(--navy-deep); border-color: var(--gold-light); }
+.tag.green { background: var(--green); border-color: rgba(255,255,255,0.3); }
+.tag.red { background: var(--red); border-color: rgba(255,255,255,0.3); }
+.tag.outline { background: transparent; color: var(--blue-light); border-color: var(--blue-light); }
+
+/* Background pattern decorativo */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(169, 214, 232, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.slide::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(27, 111, 184, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* SLIDE 1 - CAPA */
+.slide-cover {
+  text-align: center;
+  position: relative;
+}
+.slide-cover h1 {
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  font-weight: 900;
+}
+.slide-cover .script-accent {
+  font-family: 'Allura', cursive;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--blue-light);
+  margin-bottom: 1rem;
+  display: block;
+}
+.slide-cover .subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  color: var(--blue-light);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+.shield-decoration {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 2rem;
+  background: var(--blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--blue-light);
+  box-shadow: 0 0 40px rgba(169, 214, 232, 0.3);
+  position: relative;
+}
+.shield-decoration::after {
+  content: '';
+  width: 35px;
+  height: 40px;
+  background: var(--blue-light);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 70%, 50% 100%, 0% 70%, 0% 25%);
+}
+.slide-cover .meta {
+  display: flex;
+  gap: 4rem;
+  justify-content: center;
+  margin-top: 4rem;
+  opacity: 0.85;
+}
+.slide-cover .meta div { text-align: center; }
+.slide-cover .meta .label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--gold);
+}
+.slide-cover .meta .value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--white);
+}
+
+/* AGENDA */
+.agenda-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 950px;
+  margin-top: 2rem;
+}
+.agenda-item {
+  background: rgba(169, 214, 232, 0.05);
+  border: 1px solid rgba(169, 214, 232, 0.15);
+  border-left: 4px solid var(--blue-light);
+  padding: 1.3rem 1.8rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  transition: background 0.2s;
+}
+.agenda-item:hover { background: rgba(169, 214, 232, 0.1); }
+.agenda-item .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  color: var(--blue-light);
+  font-weight: 800;
+  min-width: 50px;
+  line-height: 1;
+}
+.agenda-item .text { flex: 1; }
+.agenda-item .name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.agenda-item .time {
+  font-size: 0.8rem;
+  color: var(--gold);
+  margin-top: 0.3rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* IMPACTO */
+.impact-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(8rem, 18vw, 16rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+.impact-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  margin-top: 1rem;
+  text-align: center;
+  max-width: 800px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+.impact-sub {
+  margin-top: 2.5rem;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  color: var(--blue-light);
+  text-align: center;
+  max-width: 700px;
+  line-height: 1.7;
+}
+.impact-sub strong { color: var(--green); font-weight: 700; }
+
+/* PROBLEMS GRID */
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin-top: 2rem;
+}
+.problem-card {
+  background: rgba(169, 214, 232, 0.06);
+  border: 1px solid rgba(169, 214, 232, 0.18);
+  padding: 2rem;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s;
+}
+.problem-card:hover {
+  background: rgba(169, 214, 232, 0.1);
+  border-color: var(--blue-light);
+  transform: translateY(-3px);
+}
+.problem-card .icon {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+.problem-card h4 {
+  color: var(--blue-light);
+  margin-bottom: 0.6rem;
+  font-size: 1.15rem;
+}
+.problem-card p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.78);
+  line-height: 1.6;
+}
+.problem-card .num {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: rgba(169, 214, 232, 0.1);
+  line-height: 1;
+}
+
+/* PROBLEM DETAIL */
+.problem-detail {
+  max-width: 1000px;
+  width: 100%;
+}
+.problem-detail .label {
+  color: var(--gold);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+.problem-detail h2 { margin-bottom: 2rem; }
+.problem-detail .description {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: rgba(255,255,255,0.92);
+}
+.problem-detail .description strong { color: var(--blue-light); font-weight: 600; }
+.problem-detail .impact-box {
+  background: rgba(196, 69, 69, 0.12);
+  border: 1px solid rgba(196, 69, 69, 0.4);
+  border-left: 4px solid var(--red);
+  padding: 1.5rem 2rem;
+  border-radius: 4px;
+  margin-top: 2rem;
+}
+.problem-detail .impact-box .impact-label {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--red);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+.problem-detail .impact-box .impact-value {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* OPTIMIZATION LIST */
+.optimization-list {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+}
+.opt-item {
+  background: rgba(169, 214, 232, 0.06);
+  border: 1px solid rgba(169, 214, 232, 0.1);
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-left: 3px solid var(--green);
+}
+.opt-item.removed { border-left-color: var(--red); }
+.opt-item.changed { border-left-color: var(--gold); }
+.opt-item .icon { font-size: 1.3rem; min-width: 30px; }
+.opt-item .text { flex: 1; font-size: 1rem; line-height: 1.5; }
+.opt-item .text strong { color: var(--blue-light); font-weight: 600; }
+
+/* STATS */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  margin-top: 2rem;
+}
+.stat-card {
+  background: rgba(169, 214, 232, 0.06);
+  border: 1px solid rgba(169, 214, 232, 0.18);
+  padding: 2.5rem 1.5rem;
+  border-radius: 4px;
+  text-align: center;
+}
+.stat-card .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.stat-card .num.red { color: var(--red); }
+.stat-card .num.green { color: var(--green); }
+.stat-card .num.blue { color: var(--blue-light); }
+.stat-card .label {
+  margin-top: 0.7rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+}
+
+/* SPECIALTIES GRID */
+.specialties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+  max-width: 900px;
+  margin-top: 1.5rem;
+}
+.spec-tag {
+  background: rgba(169, 214, 232, 0.1);
+  border: 1px solid rgba(169, 214, 232, 0.3);
+  padding: 0.7rem 1rem;
+  border-radius: 3px;
+  font-size: 0.88rem;
+  text-align: center;
+  color: var(--white);
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+}
+.spec-tag.new {
+  background: rgba(74, 155, 126, 0.15);
+  border-color: rgba(74, 155, 126, 0.5);
+}
+
+/* WAVES */
+.waves {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 1000px;
+  width: 100%;
+  margin-top: 2rem;
+}
+.wave {
+  display: flex;
+  gap: 2rem;
+  background: rgba(169, 214, 232, 0.06);
+  border: 1px solid rgba(169, 214, 232, 0.15);
+  padding: 1.5rem 2rem;
+  border-radius: 4px;
+  align-items: center;
+}
+.wave-time {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
+  border: 1px solid var(--blue-light);
+  color: white;
+  padding: 1.2rem 1.5rem;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 140px;
+}
+.wave-time .num {
+  font-size: 2.2rem;
+  font-weight: 900;
+  display: block;
+  line-height: 1;
+}
+.wave-time .label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 0.4rem;
+  font-weight: 600;
+  color: var(--blue-light);
+}
+.wave-content { flex: 1; }
+.wave-content h4 { color: var(--blue-light); margin-bottom: 0.4rem; font-size: 1.2rem; }
+.wave-content p { font-size: 0.95rem; }
+.wave-content strong { color: var(--gold); font-weight: 600; }
+
+/* PRIO CARDS */
+.prio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+.prio-card {
+  background: rgba(169, 214, 232, 0.06);
+  border: 1px solid rgba(169, 214, 232, 0.15);
+  padding: 1.5rem;
+  border-radius: 4px;
+  border-top: 3px solid var(--blue-light);
+}
+.prio-card.p0 { border-top-color: var(--red); }
+.prio-card.p1 { border-top-color: var(--gold); }
+.prio-card.p2 { border-top-color: var(--green); }
+.prio-card.p3 { border-top-color: var(--blue-light); }
+.prio-card .prio-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+.prio-card h4 {
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 700;
+}
+.prio-card ul { list-style: none; padding: 0; }
+.prio-card li {
+  padding: 0.5rem 0 0.5rem 1.2rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  line-height: 1.5;
+}
+.prio-card li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: var(--blue-light);
+  font-size: 0.6rem;
+  top: 0.85rem;
+}
+.prio-card li:last-child { border-bottom: none; }
+
+/* QUESTIONS */
+.question-list {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.question-item {
+  background: rgba(27, 111, 184, 0.12);
+  border: 1px solid rgba(169, 214, 232, 0.25);
+  border-left: 4px solid var(--blue-light);
+  padding: 1.5rem 2rem;
+  border-radius: 4px;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.question-item .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  min-width: 60px;
+}
+.question-item .text {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.92);
+}
+
+/* CLOSING */
+.closing { text-align: center; max-width: 900px; }
+.closing .script-accent {
+  font-family: 'Allura', cursive;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--blue-light);
+  margin-bottom: 0.5rem;
+  display: block;
+  text-transform: none;
+}
+.closing h2 {
+  background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+}
+.closing p { font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; }
+.closing p strong { color: var(--gold); font-weight: 700; }
+.closing .signature {
+  margin-top: 3rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: var(--blue-light);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.closing .signature::before, .closing .signature::after {
+  content: '◆';
+  margin: 0 1rem;
+  color: var(--gold);
+  opacity: 0.6;
+}
+
+/* INFO BOX */
+.info-box {
+  max-width: 800px;
+  margin-top: 2rem;
+  padding: 1.5rem 2rem;
+  background: rgba(27, 111, 184, 0.15);
+  border: 1px solid rgba(169, 214, 232, 0.3);
+  border-radius: 4px;
+  border-left: 4px solid var(--gold);
+}
+.info-box strong { color: var(--gold); font-weight: 700; }
+
+/* NAVIGATION */
+.nav-controls {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 100;
+}
+.nav-btn {
+  background: rgba(169, 214, 232, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--blue-light);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 700;
+  transition: all 0.2s;
+  font-family: 'Montserrat', sans-serif;
+}
+.nav-btn:hover {
+  background: var(--blue-light);
+  color: var(--navy-deep);
+}
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.slide-counter {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(169, 214, 232, 0.5);
+  letter-spacing: 0.2em;
+  z-index: 100;
+  font-weight: 600;
+}
+.slide-counter .current { color: var(--gold); font-weight: 700; }
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(169, 214, 232, 0.1);
+  z-index: 99;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 50%, var(--gold) 100%);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.deck-logo {
+  position: fixed;
+  top: 1.5rem;
+  right: 2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(169, 214, 232, 0.5);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  z-index: 99;
+  font-weight: 600;
+}
+.deck-logo .gold { color: var(--gold); }
+
+.accent-line {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 100%);
+  margin: 1.5rem 0;
+  border-radius: 2px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .slide { padding: 2rem 1.5rem; }
+  .agenda-grid, .problems-grid, .stats-row, .prio-grid, .specialties-grid {
+    grid-template-columns: 1fr;
+  }
+  .wave { flex-direction: column; gap: 1rem; }
+  .wave-time { width: 100%; }
+  .nav-controls { bottom: 1rem; right: 1rem; }
+  .slide-counter { bottom: 1rem; left: 1rem; }
+  .deck-logo { top: 1rem; right: 1rem; font-size: 0.6rem; }
+  .slide-cover .meta { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<div class="deck-logo">Sigma <span class="gold">×</span> HVSB</div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 - CAPA -->
+  <section class="slide slide-cover active" data-slide="1">
+    <div class="shield-decoration"></div>
+    <span class="script-accent">auditoria &</span>
+    <h1>Otimização HVSB</h1>
+    <div class="subtitle">Resultados · Abril 2026</div>
+    <div class="accent-line" style="margin: 0 auto;"></div>
+    <p style="max-width: 600px; text-align: center; margin-top: 2rem; font-style: italic; color: var(--blue-light);">
+      O que descobrimos. O que executamos. O que vem agora.
+    </p>
+    <div class="meta">
+      <div>
+        <div class="label">Cliente</div>
+        <div class="value">Hospital Veterinário<br>São Bernardo</div>
+      </div>
+      <div>
+        <div class="label">Período</div>
+        <div class="value">1 a 16 de Abril<br>de 2026</div>
+      </div>
+      <div>
+        <div class="label">Conta</div>
+        <div class="value">192-048-4711<br>Curitiba/PR</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 - AGENDA -->
+  <section class="slide" data-slide="2">
+    <span class="tag outline">Agenda da Reunião</span>
+    <span class="script" style="font-size: 2.5rem; margin-bottom: 0.5rem;">o que vem por aí</span>
+    <h2>30 minutos · 6 blocos</h2>
+    <div class="agenda-grid">
+      <div class="agenda-item">
+        <div class="num">01</div>
+        <div class="text">
+          <div class="name">Abertura</div>
+          <div class="time">2 min</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="num">02</div>
+        <div class="text">
+          <div class="name">Diagnóstico Inicial</div>
+          <div class="time">5 min</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="num">03</div>
+        <div class="text">
+          <div class="name">Otimizações Executadas</div>
+          <div class="time">12 min</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="num">04</div>
+        <div class="text">
+          <div class="name">Resultados Esperados</div>
+          <div class="time">4 min</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="num">05</div>
+        <div class="text">
+          <div class="name">Próximos Passos</div>
+          <div class="time">5 min</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="num">06</div>
+        <div class="text">
+          <div class="name">Perguntas</div>
+          <div class="time">2 min</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 - SPOILER -->
+  <section class="slide" data-slide="3">
+    <span class="tag red">Antes de tudo</span>
+    <span class="script" style="font-size: 2.2rem; margin-bottom: 1rem;">descobrimos que</span>
+    <div class="impact-number">50%</div>
+    <div class="impact-text">do investimento estava<br>sendo desperdiçado</div>
+    <div class="impact-sub">
+      Por dois problemas técnicos invisíveis no painel.<br>
+      <strong>Os dois foram corrigidos hoje.</strong>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 - DIAGNÓSTICO -->
+  <section class="slide" data-slide="4">
+    <span class="tag">Bloco 02 · Diagnóstico</span>
+    <span class="script" style="font-size: 2rem;">o que estava errado</span>
+    <h2>4 problemas críticos</h2>
+    <p style="max-width: 800px; text-align: center; margin-bottom: 1rem; color: var(--blue-light);">
+      Auditoria em 3 frentes: Google Ads, Tracking (GA4 + GTM) e Google Meu Negócio.
+    </p>
+    <div class="problems-grid">
+      <div class="problem-card">
+        <div class="num">01</div>
+        <div class="icon">🚫</div>
+        <h4>Página 404 nos Anúncios</h4>
+        <p>228 cliques em 16 dias caindo em página inexistente. R$ 849 desperdiçados.</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">02</div>
+        <div class="icon">📵</div>
+        <h4>Tracking Desligado</h4>
+        <p>Eventos de WhatsApp e telefone disparavam mas não eram contados como conversão.</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">03</div>
+        <div class="icon">🗺️</div>
+        <h4>Google Meu Negócio com Erros</h4>
+        <p>4 serviços duplicados + 9 especialidades importantes faltando.</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">04</div>
+        <div class="icon">⚠️</div>
+        <h4>Saldo Crítico</h4>
+        <p>Alerta vermelho ativo. Risco de pausar todas as 9 campanhas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 - PROBLEMA 1 -->
+  <section class="slide" data-slide="5">
+    <div class="problem-detail">
+      <div class="label">Problema 01</div>
+      <h2>Página 404 nos<br>Anúncios Principais</h2>
+      <p class="description">
+        A campanha "Hospital Veterinário" tinha 4 anúncios ativos, todos apontando para uma URL que retornava <strong>erro 404</strong> (página não encontrada).
+      </p>
+      <p class="description">
+        Em 16 dias, <strong>228 pessoas</strong> clicaram nos anúncios e caíram em página de erro. Saíram sem conhecer o hospital.
+      </p>
+      <div class="impact-box">
+        <div class="impact-label">Impacto Financeiro</div>
+        <div class="impact-value">R$ 849 desperdiçados em 16 dias = ~R$ 53/dia</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 - PROBLEMA 2 -->
+  <section class="slide" data-slide="6">
+    <div class="problem-detail">
+      <div class="label">Problema 02</div>
+      <h2>Tracking de Leads<br>não Contava Conversão</h2>
+      <p class="description">
+        Os botões de WhatsApp e telefone do site disparavam corretamente os eventos no Google Analytics 4 — mas esses eventos <strong>não estavam marcados como Eventos Principais</strong>.
+      </p>
+      <p class="description">
+        Sem essa marcação, o Google Ads não importava como conversão. As campanhas otimizavam com base num sinal genérico que mistura WhatsApp, telefone, redes sociais e qualquer link externo.
+      </p>
+      <div class="impact-box">
+        <div class="impact-label">Impacto Estratégico</div>
+        <div class="impact-value">Smart Bidding otimizava para o sinal errado</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 - PROBLEMA 3 -->
+  <section class="slide" data-slide="7">
+    <div class="problem-detail">
+      <div class="label">Problema 03</div>
+      <h2>Ficha do GMN<br>Confusa</h2>
+      <p class="description">
+        4 serviços duplicados (ex: "Cirurgias" e "Cirurgia Veterinária" listados como dois serviços separados) confundiam o algoritmo do Google.
+      </p>
+      <p class="description">
+        9 especialidades importantes não estavam cadastradas — entre elas <strong>Dermatologia, Neurologia, UTI, Ultrassom e Ecocardiografia</strong>.
+      </p>
+      <div class="impact-box">
+        <div class="impact-label">Impacto na Visibilidade</div>
+        <div class="impact-value">Hospital invisível no Maps para essas buscas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 - PROBLEMA 4 -->
+  <section class="slide" data-slide="8">
+    <div class="problem-detail">
+      <div class="label">Problema 04</div>
+      <h2>Saldo da Conta<br>com Alerta Vermelho</h2>
+      <p class="description">
+        A conta de Google Ads está com aviso de saldo crítico no painel.
+      </p>
+      <p class="description">
+        Se ficar sem fundos, <strong>todas as 9 campanhas pausam automaticamente</strong> — e isso zeraria o histórico de aprendizado dos algoritmos de Smart Bidding.
+      </p>
+      <div class="impact-box">
+        <div class="impact-label">Ação Pendente</div>
+        <div class="impact-value">Pagamento do saldo precisa ser feito hoje</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 - GMN -->
+  <section class="slide" data-slide="9">
+    <span class="tag green">Otimizações 01 / 03</span>
+    <span class="script" style="font-size: 2rem;">a ficha do</span>
+    <h2>Google Meu Negócio</h2>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num red">−4</div>
+        <div class="label">Duplicatas Removidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="num green">+9</div>
+        <div class="label">Especialidades Novas</div>
+      </div>
+      <div class="stat-card">
+        <div class="num blue">23</div>
+        <div class="label">Serviços Únicos Finais</div>
+      </div>
+    </div>
+    <h4 style="margin-top: 3rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.85rem;">Especialidades Adicionadas</h4>
+    <div class="specialties-grid">
+      <div class="spec-tag new">Dermatologia Veterinária</div>
+      <div class="spec-tag new">Emergência 24h</div>
+      <div class="spec-tag new">Neurologia Veterinária</div>
+      <div class="spec-tag new">UTI Veterinária</div>
+      <div class="spec-tag new">Nefrologia Veterinária</div>
+      <div class="spec-tag new">Ultrassom Veterinário</div>
+      <div class="spec-tag new">Ecocardiografia</div>
+      <div class="spec-tag new">Endocrinologia</div>
+      <div class="spec-tag new">Gastroenterologia</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 - GOOGLE ADS -->
+  <section class="slide" data-slide="10">
+    <span class="tag green">Otimizações 02 / 03</span>
+    <span class="script" style="font-size: 2rem;">na conta de</span>
+    <h2>Google Ads · 8 ações</h2>
+    <div class="optimization-list">
+      <div class="opt-item removed">
+        <div class="icon">❌</div>
+        <div class="text"><strong>Pausada</strong> keyword "veterinário curitiba" — queimava R$ 17/dia sem conversão</div>
+      </div>
+      <div class="opt-item removed">
+        <div class="icon">❌</div>
+        <div class="text"><strong>Pausadas</strong> "problemas de pele cachorro" + "otite veterinária" — CTR de 0,3%</div>
+      </div>
+      <div class="opt-item changed">
+        <div class="icon">⬇</div>
+        <div class="text">Hospital Veterinário <strong>R$ 60 → R$ 30/dia</strong> (em observação até validar tracking)</div>
+      </div>
+      <div class="opt-item changed">
+        <div class="icon">⬆</div>
+        <div class="text">Branding <strong>R$ 15 → R$ 25/dia</strong> (CPA R$ 3,27 — melhor performer)</div>
+      </div>
+      <div class="opt-item changed">
+        <div class="icon">⬆</div>
+        <div class="text">Domicílio <strong>R$ 35 → R$ 60/dia</strong> (estava limitado por volume)</div>
+      </div>
+      <div class="opt-item">
+        <div class="icon">📋</div>
+        <div class="text">Criada lista <strong>"Negativas Universais HVSB"</strong> (21 termos, 9 campanhas)</div>
+      </div>
+      <div class="opt-item">
+        <div class="icon">✅</div>
+        <div class="text"><strong>URL final corrigida</strong> dos 4 anúncios da Hospital Veterinário (era 404)</div>
+      </div>
+      <div class="opt-item">
+        <div class="icon">🔄</div>
+        <div class="text"><strong>Reativada</strong> campanha Institucional (volume insuficiente para julgamento)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 - TRACKING -->
+  <section class="slide" data-slide="11">
+    <span class="tag green">Otimizações 03 / 03</span>
+    <span class="script" style="font-size: 2rem;">o coração técnico</span>
+    <h2>Tracking · GA4 + GTM</h2>
+    <p style="max-width: 800px; margin-bottom: 1rem; color: var(--blue-light);">
+      A correção mais importante. Vou explicar de forma simples.
+    </p>
+    <div class="optimization-list">
+      <div class="opt-item">
+        <div class="icon">⭐</div>
+        <div class="text">Marcado <strong>phone_call_click</strong> como Evento Principal no GA4</div>
+      </div>
+      <div class="opt-item">
+        <div class="icon">⭐</div>
+        <div class="text">Marcado <strong>whatsapp_click</strong> como Evento Principal no GA4</div>
+      </div>
+      <div class="opt-item">
+        <div class="icon">🔍</div>
+        <div class="text">Auditados <strong>8 contêineres GTM</strong> (1 por subdomínio)</div>
+      </div>
+      <div class="opt-item">
+        <div class="icon">⚠️</div>
+        <div class="text">Identificada <strong>tag duplicada</strong> que será pausada após import GA4 → Ads</div>
+      </div>
+    </div>
+    <div class="info-box">
+      <strong>Tradução prática:</strong> em 24-48h, o algoritmo das campanhas vai começar a entender quem é lead de verdade (clica no WhatsApp ou liga) versus quem só passou pela página.
+    </div>
+  </section>
+
+  <!-- SLIDE 12 - 3 ONDAS -->
+  <section class="slide" data-slide="12">
+    <span class="tag">Bloco 04 · Resultados</span>
+    <span class="script" style="font-size: 2rem;">o que esperar</span>
+    <h2>Impacto em 3 ondas</h2>
+    <div class="waves">
+      <div class="wave">
+        <div class="wave-time">
+          <span class="num">24h</span>
+          <span class="label">a 72 horas</span>
+        </div>
+        <div class="wave-content">
+          <h4>Onda 01 · Imediata</h4>
+          <p>Anúncios da Hospital Vet param de mandar pra 404. Lista de negativas filtra termos ruins. Orçamento maior em campanhas que convertem. <strong>CPC tende a cair 15-25%</strong>.</p>
+        </div>
+      </div>
+      <div class="wave">
+        <div class="wave-time">
+          <span class="num">7-14</span>
+          <span class="label">dias</span>
+        </div>
+        <div class="wave-content">
+          <h4>Onda 02 · Curto Prazo</h4>
+          <p>GA4 começa a contar conversão real. <strong>Conversões reportadas vão cair 30-60%</strong> — isso é positivo, sai do número inflado pro real. Smart Bidding otimiza com sinal correto.</p>
+        </div>
+      </div>
+      <div class="wave">
+        <div class="wave-time">
+          <span class="num">1-4</span>
+          <span class="label">semanas</span>
+        </div>
+        <div class="wave-content">
+          <h4>Onda 03 · Médio Prazo</h4>
+          <p>GMN começa a aparecer nas buscas das especialidades novas: <strong>"ultrassom veterinário curitiba"</strong>, <strong>"neurologista veterinário"</strong>, <strong>"emergência veterinária 24h"</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 13 - P0 -->
+  <section class="slide" data-slide="13">
+    <span class="tag red">Próximos Passos · P0</span>
+    <span class="script" style="font-size: 2rem;">próximas</span>
+    <h2>48 horas</h2>
+    <div class="prio-grid">
+      <div class="prio-card p0">
+        <div class="prio-label">Cliente HVSB</div>
+        <h4>Pagar saldo da conta Ads</h4>
+        <ul>
+          <li>Resolve alerta vermelho do painel</li>
+          <li>Evita pausa automática das 9 campanhas</li>
+          <li>Preserva histórico do Smart Bidding</li>
+        </ul>
+      </div>
+      <div class="prio-card p0">
+        <div class="prio-label">Agência Sigma</div>
+        <h4>Importar conversões GA4 → Ads</h4>
+        <ul>
+          <li>Aguardar 24-48h pós marcação no GA4</li>
+          <li>Marcar como Primary + Goal Category Contact</li>
+          <li>Mover "Clique de saída" para Secondary</li>
+          <li>Pausar tag duplicada no GTM</li>
+        </ul>
+      </div>
+      <div class="prio-card p0">
+        <div class="prio-label">Agência Sigma</div>
+        <h4>Criar 6 grupos novos em Especialidades</h4>
+        <ul>
+          <li>Neurologia Veterinária</li>
+          <li>UTI Veterinária + Ultrassom</li>
+          <li>Nefrologia + Ecocardiografia</li>
+          <li>Endocrinologia + Gastro consolidado</li>
+        </ul>
+      </div>
+      <div class="prio-card p0">
+        <div class="prio-label">Cliente HVSB</div>
+        <h4>Aprovar criação dos novos grupos</h4>
+        <ul>
+          <li>Templates 100% prontos</li>
+          <li>URL final aponta para subdomínio funcional</li>
+          <li>Tempo total de criação: 30 min</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 14 - P1 -->
+  <section class="slide" data-slide="14">
+    <span class="tag gold">Próximos Passos · P1</span>
+    <span class="script" style="font-size: 2rem;">próximas</span>
+    <h2>2-3 semanas</h2>
+    <div class="prio-grid">
+      <div class="prio-card p1">
+        <div class="prio-label">Local Services Ads</div>
+        <h4>LSA · Selo "Garantido pelo Google"</h4>
+        <ul>
+          <li>Aparece acima dos anúncios tradicionais</li>
+          <li>Paga por lead qualificado, não por clique</li>
+          <li>Aprovação leva 3-6 semanas</li>
+          <li>Precisa CRMV + alvará + seguro</li>
+        </ul>
+      </div>
+      <div class="prio-card p1">
+        <div class="prio-label">Search</div>
+        <h4>Campanha Urgência 24h dedicada</h4>
+        <ul>
+          <li>Lead mais quente do segmento veterinário</li>
+          <li>"Veterinário 24h" e "emergência" estão pausados</li>
+          <li>Precisa LP urgencia.hvsb.com.br</li>
+        </ul>
+      </div>
+      <div class="prio-card p1">
+        <div class="prio-label">Tracking Avançado</div>
+        <h4>Call Conversion Google</h4>
+        <ul>
+          <li>Google Forwarding Number</li>
+          <li>Captura ligações reais (60s mínimo)</li>
+          <li>Sinaliza conversa real vs miss para o algoritmo</li>
+        </ul>
+      </div>
+      <div class="prio-card p1">
+        <div class="prio-label">Landing Page</div>
+        <h4>Criar urgencia.hvsb.com.br</h4>
+        <ul>
+          <li>WhatsApp gigante acima da dobra</li>
+          <li>Telefone clicável visível</li>
+          <li>Mobile-first (80% do tráfego vet é mobile)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 15 - P2/P3 -->
+  <section class="slide" data-slide="15">
+    <span class="tag green">Próximos Passos · P2 e P3</span>
+    <span class="script" style="font-size: 2rem;">visão de</span>
+    <h2>Mês 2 e além</h2>
+    <div class="prio-grid">
+      <div class="prio-card p2">
+        <div class="prio-label">P2 · Mês 2</div>
+        <h4>Demand Gen Maps</h4>
+        <ul>
+          <li>Pin patrocinado no Google Maps</li>
+          <li>Resolve queixa do médico Maicon</li>
+          <li>Foco nas especialidades novas</li>
+        </ul>
+      </div>
+      <div class="prio-card p2">
+        <div class="prio-label">P2 · Mês 2</div>
+        <h4>Customer Match</h4>
+        <ul>
+          <li>Lista de clientes ativos do CRM</li>
+          <li>Permite remarketing + lookalike</li>
+          <li>Alimenta Smart Bidding com sinal real</li>
+        </ul>
+      </div>
+      <div class="prio-card p3">
+        <div class="prio-label">P3 · Mês 3</div>
+        <h4>Migração para tCPA</h4>
+        <ul>
+          <li>Branding, Domicílio e Especialidades</li>
+          <li>Quando atingirem 30 conv/mês com tracking</li>
+          <li>Maior previsibilidade de CPA</li>
+        </ul>
+      </div>
+      <div class="prio-card p3">
+        <div class="prio-label">P3 · Mês 3+</div>
+        <h4>Performance Max</h4>
+        <ul>
+          <li>Cobre Search + Maps + YouTube + Display</li>
+          <li>Brand exclusion ativo desde dia 1</li>
+          <li>Só ativar com 60 dias de tracking maduro</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 16 - PERGUNTAS -->
+  <section class="slide" data-slide="16">
+    <span class="tag">Bloco 06 · Perguntas</span>
+    <span class="script" style="font-size: 2rem;">precisamos saber</span>
+    <h2>Para avançar, dependo de vocês</h2>
+    <div class="question-list">
+      <div class="question-item">
+        <div class="num">01</div>
+        <div class="text">Quem da equipe tem acesso administrativo à conta Ads para autorizar a importação de conversão? Vai precisar de login com 2FA.</div>
+      </div>
+      <div class="question-item">
+        <div class="num">02</div>
+        <div class="text">O médico responsável tem CRMV ativo, alvará da clínica e seguro de responsabilidade civil? Os três documentos são obrigatórios para o LSA.</div>
+      </div>
+      <div class="question-item">
+        <div class="num">03</div>
+        <div class="text">Qual o ticket médio real de cada tipo de atendimento? (Consulta, especialista, urgência, cirurgia, internação) — necessário para tROAS futuro.</div>
+      </div>
+      <div class="question-item">
+        <div class="num">04</div>
+        <div class="text">A recepção tem capacidade para absorver aumento de demanda nas especialidades novas? Antes de subir verba forte, validar operacional.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 17 - ENCERRAMENTO -->
+  <section class="slide" data-slide="17">
+    <div class="closing">
+      <span class="tag green">Para Fechar</span>
+      <span class="script-accent">o essencial</span>
+      <h2>em uma frase</h2>
+      <p>
+        A conta tinha <strong>dois grandes vazamentos</strong><br>que custavam metade do investimento.
+      </p>
+      <p style="color: var(--blue-light);">
+        URL quebrada e tracking errado.<br>
+        <span style="color: var(--green); font-weight: 700;">Os dois foram corrigidos hoje.</span>
+      </p>
+      <p style="margin-top: 2.5rem; font-size: 1.4rem;">
+        Em 30 dias, vocês devem enxergar<br>
+        o <strong>CPA real diminuindo</strong> e o<br>
+        <strong>volume de leads qualificados aumentando</strong>.
+      </p>
+      <div class="signature">Sigma · HVSB · Curitiba · 2026</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="slide-counter">
+  <span class="current" id="current">01</span> · <span id="total">17</span>
+</div>
+
+<div class="nav-controls">
+  <button class="nav-btn" id="prev" aria-label="Slide anterior">‹</button>
+  <button class="nav-btn" id="next" aria-label="Próximo slide">›</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const currentEl = document.getElementById('current');
+const totalEl = document.getElementById('total');
+const progressEl = document.getElementById('progress');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+let current = 0;
+
+totalEl.textContent = String(total).padStart(2, '0');
+
+function go(idx) {
+  if (idx < 0 || idx >= total) return;
+  slides[current].classList.remove('active');
+  if (idx < current) slides[current].classList.add('prev');
+  else slides[current].classList.remove('prev');
+  current = idx;
+  slides[current].classList.add('active');
+  slides[current].classList.remove('prev');
+  currentEl.textContent = String(current + 1).padStart(2, '0');
+  progressEl.style.width = ((current + 1) / total * 100) + '%';
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current === total - 1;
+}
+
+prevBtn.addEventListener('click', () => go(current - 1));
+nextBtn.addEventListener('click', () => go(current + 1));
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End') go(total - 1);
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+document.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(diff) > 50) {
+    if (diff < 0) go(current + 1);
+    else go(current - 1);
+  }
+});
+
+progressEl.style.width = (1 / total * 100) + '%';
+prevBtn.disabled = true;
+</script>
+
+</body>
+</html>
