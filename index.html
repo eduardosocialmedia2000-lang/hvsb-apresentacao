@@ -931,13 +931,13 @@ p {
 
   <!-- SLIDE 3 - SPOILER -->
   <section class="slide" data-slide="3">
-    <span class="tag red">Antes de tudo</span>
-    <span class="script" style="font-size: 2.2rem; margin-bottom: 1rem;">descobrimos que</span>
+    <span class="tag outline">Spoiler do principal</span>
+    <span class="script" style="font-size: 2.2rem; margin-bottom: 1rem;">a partir de hoje</span>
     <div class="impact-number">100%</div>
-    <div class="impact-text">dos leads de WhatsApp e ligação<br>não eram contados como conversão</div>
+    <div class="impact-text">dos cliques em WhatsApp e ligação<br>passam a contar como conversão</div>
     <div class="impact-sub">
-      O algoritmo das campanhas otimizava com base em sinal errado.<br>
-      <strong>Já foi corrigido hoje.</strong>
+      Evolução técnica aplicada na medição.<br>
+      <strong>O algoritmo das campanhas vai aprender com lead real.</strong>
     </div>
   </section>
 
@@ -945,115 +945,115 @@ p {
   <section class="slide" data-slide="4">
     <span class="tag">Bloco 02 · Diagnóstico</span>
     <span class="script" style="font-size: 2rem;">o que estava errado</span>
-    <h2>3 problemas críticos</h2>
+    <h2>3 oportunidades identificadas</h2>
     <p style="max-width: 800px; text-align: center; margin-bottom: 1rem; color: var(--blue-light);">
       Auditoria em 3 frentes: Google Ads, Tracking (GA4 + GTM) e Google Meu Negócio.
     </p>
     <div class="problems-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 1200px;">
       <div class="problem-card">
         <div class="num">01</div>
-        <div class="icon">📵</div>
-        <h4>Tracking Desligado</h4>
-        <p>Eventos de WhatsApp e telefone disparavam mas não eram contados como conversão.</p>
+        <div class="icon">⚙️</div>
+        <h4>Evolução do Tracking</h4>
+        <p>Refinar a medição para que cliques em WhatsApp e telefone sejam reconhecidos como conversão.</p>
       </div>
       <div class="problem-card">
         <div class="num">02</div>
         <div class="icon">🗺️</div>
-        <h4>Google Meu Negócio com Erros</h4>
-        <p>4 serviços duplicados + 9 especialidades importantes faltando.</p>
+        <h4>Expansão do Google Meu Negócio</h4>
+        <p>Limpar duplicatas e adicionar 9 especialidades importantes que ainda não estavam cadastradas.</p>
       </div>
       <div class="problem-card">
         <div class="num">03</div>
-        <div class="icon">⚠️</div>
-        <h4>Saldo Crítico</h4>
-        <p>Alerta vermelho ativo. Risco de pausar todas as 9 campanhas.</p>
+        <div class="icon">💳</div>
+        <h4>Saldo Pendente</h4>
+        <p>Alerta de saldo no painel. Pagamento garante continuidade das campanhas e do aprendizado dos algoritmos.</p>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 5 - PROBLEMA 1 (Tracking) -->
+  <!-- SLIDE 5 - OPORTUNIDADE 01 (Tracking) -->
   <section class="slide" data-slide="5">
     <div class="problem-detail">
-      <div class="label">Problema 01</div>
-      <h2>Tracking de Leads<br>não Contava Conversão</h2>
+      <div class="label">Oportunidade 01</div>
+      <h2>Evolução do Tracking<br>de Conversão</h2>
       <p class="description">
-        Os botões de WhatsApp e telefone do site disparavam corretamente os eventos no Google Analytics 4 — mas esses eventos <strong>não estavam marcados como Eventos Principais</strong>.
+        A estrutura de tracking via GTM já estava implementada e capturando os eventos certos: <strong>phone_call_click</strong> e <strong>whatsapp_click</strong> chegando no GA4.
       </p>
       <p class="description">
-        Sem essa marcação, o Google Ads não importava como conversão. As campanhas otimizavam com base num sinal genérico que mistura WhatsApp, telefone, redes sociais e qualquer link externo.
+        A oportunidade identificada foi <strong>refinar a configuração no GA4</strong> para que esses eventos sejam reconhecidos pelo Google Ads como conversão primária — em vez do sinal genérico de "Clique de saída" que estava sendo usado.
       </p>
-      <div class="impact-box">
-        <div class="impact-label">Impacto Estratégico</div>
-        <div class="impact-value">Smart Bidding otimizava para o sinal errado</div>
+      <div class="impact-box" style="background: rgba(212, 163, 64, 0.1); border-color: rgba(212, 163, 64, 0.4); border-left-color: var(--gold);">
+        <div class="impact-label" style="color: var(--gold);">Ganho Estratégico</div>
+        <div class="impact-value">Smart Bidding agora aprende com lead real, não com proxy</div>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 6 - POR QUE O TRACKING ESTAVA "DESLIGADO" -->
+  <!-- SLIDE 6 - DETALHE TÉCNICO TRACKING -->
   <section class="slide" data-slide="6">
-    <span class="tag outline">Detalhe técnico</span>
-    <span class="script" style="font-size: 2rem;">por que isso aconteceu?</span>
-    <h2 style="margin-bottom: 1rem;">A causa raiz</h2>
+    <span class="tag outline">Como funciona</span>
+    <span class="script" style="font-size: 2rem;">a arquitetura</span>
+    <h2 style="margin-bottom: 1rem;">Estrutura de Medição</h2>
     <p style="max-width: 850px; text-align: center; color: var(--blue-light); margin-bottom: 1rem;">
-      O tracking não estava "desligado". Estava disparando — mas faltava um passo final no GA4 que conecta o sinal ao Google Ads.
+      A medição de leads acontece em 2 camadas integradas. A primeira já estava no ar; a segunda foi ativada hoje.
     </p>
     <div class="cause-grid">
       <div class="cause-card ok">
-        <div class="cause-icon">✅</div>
-        <div class="cause-label">Já estava OK</div>
-        <h4>GTM impecável</h4>
+        <div class="cause-icon">⚙️</div>
+        <div class="cause-label">Camada 01 · Captura</div>
+        <h4>GTM já implementado</h4>
         <p>
-          As tags <strong style="color: var(--green);">phone_call_click</strong> e <strong style="color: var(--green);">whatsapp_click</strong> estavam configuradas e disparando corretamente. 4 mil eventos registrados em 7 dias.
+          Estrutura sólida com <strong style="color: var(--green);">8 contêineres GTM</strong>, um por subdomínio. Tags <strong>phone_call_click</strong> e <strong>whatsapp_click</strong> disparando corretamente — 4 mil eventos/7 dias.
         </p>
         <a href="https://tagmanager.google.com/?authuser=1#/container/accounts/6346660398/containers/247626200/workspaces/11/tags" target="_blank" class="access-link">Abrir GTM</a>
       </div>
       <div class="cause-card gap">
         <div class="cause-icon">⭐</div>
-        <div class="cause-label">Faltava o passo final</div>
-        <h4>Estrela apagada no GA4</h4>
+        <div class="cause-label">Camada 02 · Conversão</div>
+        <h4>GA4 calibrado hoje</h4>
         <p>
-          Os eventos chegavam no GA4 mas não estavam marcados como <strong style="color: var(--gold);">Eventos Principais</strong> — passo manual necessário para o Google Ads importar como conversão.
+          Promovemos os 2 eventos para <strong style="color: var(--gold);">Eventos Principais</strong> no GA4. Esse é o passo que habilita o Google Ads a importar como conversão e otimizar o Smart Bidding.
         </p>
         <a href="https://analytics.google.com/analytics/web/?authuser=1#/a389759503p531044033/admin/keyevents/landing" target="_blank" class="access-link">Abrir GA4</a>
       </div>
     </div>
     <div class="analogy-box">
-      <div class="analogy-text">"Câmeras gravando 24h, mas ninguém olhando as gravações."</div>
+      <div class="analogy-text">Estrutura técnica robusta + ajuste fino estratégico aplicado.</div>
     </div>
   </section>
 
-  <!-- SLIDE 7 - PROBLEMA 2 (GMN) -->
+  <!-- SLIDE 7 - OPORTUNIDADE 02 (GMN) -->
   <section class="slide" data-slide="7">
     <div class="problem-detail">
-      <div class="label">Problema 02</div>
-      <h2>Ficha do GMN<br>Confusa</h2>
+      <div class="label">Oportunidade 02</div>
+      <h2>Expansão da Ficha<br>do Google Meu Negócio</h2>
       <p class="description">
-        4 serviços duplicados (ex: "Cirurgias" e "Cirurgia Veterinária" listados como dois serviços separados) confundiam o algoritmo do Google.
+        Identificamos 4 serviços com nomenclatura duplicada (ex: "Cirurgias" + "Cirurgia Veterinária" cadastrados separadamente) que limitavam a clareza do perfil para o algoritmo do Google.
       </p>
       <p class="description">
-        9 especialidades importantes não estavam cadastradas — entre elas <strong>Dermatologia, Neurologia, UTI, Ultrassom e Ecocardiografia</strong>.
+        Identificamos também a oportunidade de adicionar 9 especialidades estratégicas que ainda não estavam no perfil — entre elas <strong>Dermatologia, Neurologia, UTI, Ultrassom e Ecocardiografia</strong>.
       </p>
-      <div class="impact-box">
-        <div class="impact-label">Impacto na Visibilidade</div>
-        <div class="impact-value">Hospital invisível no Maps para essas buscas</div>
+      <div class="impact-box" style="background: rgba(212, 163, 64, 0.1); border-color: rgba(212, 163, 64, 0.4); border-left-color: var(--gold);">
+        <div class="impact-label" style="color: var(--gold);">Ganho na Visibilidade</div>
+        <div class="impact-value">Hospital passa a ser elegível no Maps para essas buscas</div>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 8 - PROBLEMA 3 (Saldo) -->
+  <!-- SLIDE 8 - PENDÊNCIA 03 (Saldo) -->
   <section class="slide" data-slide="8">
     <div class="problem-detail">
-      <div class="label">Problema 03</div>
-      <h2>Saldo da Conta<br>com Alerta Vermelho</h2>
+      <div class="label">Pendência 03</div>
+      <h2>Saldo Pendente<br>na Conta</h2>
       <p class="description">
-        A conta de Google Ads está com aviso de saldo crítico no painel.
+        A conta de Google Ads sinalizou alerta de saldo no painel.
       </p>
       <p class="description">
-        Se ficar sem fundos, <strong>todas as 9 campanhas pausam automaticamente</strong> — e isso zeraria o histórico de aprendizado dos algoritmos de Smart Bidding.
+        O pagamento garante a continuidade das 9 campanhas ativas e <strong>preserva o histórico de aprendizado dos algoritmos de Smart Bidding</strong> — fundamental para manter a performance.
       </p>
-      <div class="impact-box">
-        <div class="impact-label">Ação Pendente</div>
-        <div class="impact-value">Pagamento do saldo precisa ser feito hoje</div>
+      <div class="impact-box" style="background: rgba(212, 163, 64, 0.1); border-color: rgba(212, 163, 64, 0.4); border-left-color: var(--gold);">
+        <div class="impact-label" style="color: var(--gold);">Ação Operacional</div>
+        <div class="impact-value">Pagamento do saldo a ser realizado pelo HVSB</div>
       </div>
     </div>
   </section>
@@ -1364,11 +1364,11 @@ p {
       <span class="script-accent">o essencial</span>
       <h2>em uma frase</h2>
       <p>
-        O algoritmo das campanhas otimizava com base em <strong>sinal errado</strong>:<br>cliques de saída em vez de WhatsApp e ligações.
+        Refinamos a medição na raiz: o algoritmo das campanhas<br>passa a aprender com <strong>cliques reais em WhatsApp e ligação</strong>.
       </p>
       <p style="color: var(--blue-light);">
-        Hoje, isso foi corrigido na raiz.<br>
-        <span style="color: var(--green); font-weight: 700;">Smart Bidding agora aprende com lead real.</span>
+        Estrutura técnica robusta + ajuste fino estratégico.<br>
+        <span style="color: var(--green); font-weight: 700;">Smart Bidding agora otimiza com lead real.</span>
       </p>
       <p style="margin-top: 2.5rem; font-size: 1.4rem;">
         Em 30 dias, vocês devem enxergar<br>
