@@ -839,11 +839,11 @@ p {
   <section class="slide" data-slide="3">
     <span class="tag red">Antes de tudo</span>
     <span class="script" style="font-size: 2.2rem; margin-bottom: 1rem;">descobrimos que</span>
-    <div class="impact-number">50%</div>
-    <div class="impact-text">do investimento estava<br>sendo desperdiçado</div>
+    <div class="impact-number">100%</div>
+    <div class="impact-text">dos leads de WhatsApp e ligação<br>não eram contados como conversão</div>
     <div class="impact-sub">
-      Por dois problemas técnicos invisíveis no painel.<br>
-      <strong>Os dois foram corrigidos hoje.</strong>
+      O algoritmo das campanhas otimizava com base em sinal errado.<br>
+      <strong>Já foi corrigido hoje.</strong>
     </div>
   </section>
 
@@ -851,31 +851,25 @@ p {
   <section class="slide" data-slide="4">
     <span class="tag">Bloco 02 · Diagnóstico</span>
     <span class="script" style="font-size: 2rem;">o que estava errado</span>
-    <h2>4 problemas críticos</h2>
+    <h2>3 problemas críticos</h2>
     <p style="max-width: 800px; text-align: center; margin-bottom: 1rem; color: var(--blue-light);">
       Auditoria em 3 frentes: Google Ads, Tracking (GA4 + GTM) e Google Meu Negócio.
     </p>
-    <div class="problems-grid">
+    <div class="problems-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 1200px;">
       <div class="problem-card">
         <div class="num">01</div>
-        <div class="icon">🚫</div>
-        <h4>Página 404 nos Anúncios</h4>
-        <p>228 cliques em 16 dias caindo em página inexistente. R$ 849 desperdiçados.</p>
-      </div>
-      <div class="problem-card">
-        <div class="num">02</div>
         <div class="icon">📵</div>
         <h4>Tracking Desligado</h4>
         <p>Eventos de WhatsApp e telefone disparavam mas não eram contados como conversão.</p>
       </div>
       <div class="problem-card">
-        <div class="num">03</div>
+        <div class="num">02</div>
         <div class="icon">🗺️</div>
         <h4>Google Meu Negócio com Erros</h4>
         <p>4 serviços duplicados + 9 especialidades importantes faltando.</p>
       </div>
       <div class="problem-card">
-        <div class="num">04</div>
+        <div class="num">03</div>
         <div class="icon">⚠️</div>
         <h4>Saldo Crítico</h4>
         <p>Alerta vermelho ativo. Risco de pausar todas as 9 campanhas.</p>
@@ -883,28 +877,10 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 5 - PROBLEMA 1 -->
+  <!-- SLIDE 5 - PROBLEMA 1 (Tracking) -->
   <section class="slide" data-slide="5">
     <div class="problem-detail">
       <div class="label">Problema 01</div>
-      <h2>Página 404 nos<br>Anúncios Principais</h2>
-      <p class="description">
-        A campanha "Hospital Veterinário" tinha 4 anúncios ativos, todos apontando para uma URL que retornava <strong>erro 404</strong> (página não encontrada).
-      </p>
-      <p class="description">
-        Em 16 dias, <strong>228 pessoas</strong> clicaram nos anúncios e caíram em página de erro. Saíram sem conhecer o hospital.
-      </p>
-      <div class="impact-box">
-        <div class="impact-label">Impacto Financeiro</div>
-        <div class="impact-value">R$ 849 desperdiçados em 16 dias = ~R$ 53/dia</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 6 - PROBLEMA 2 -->
-  <section class="slide" data-slide="6">
-    <div class="problem-detail">
-      <div class="label">Problema 02</div>
       <h2>Tracking de Leads<br>não Contava Conversão</h2>
       <p class="description">
         Os botões de WhatsApp e telefone do site disparavam corretamente os eventos no Google Analytics 4 — mas esses eventos <strong>não estavam marcados como Eventos Principais</strong>.
@@ -919,10 +895,10 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 7 - PROBLEMA 3 -->
-  <section class="slide" data-slide="7">
+  <!-- SLIDE 6 - PROBLEMA 2 (GMN) -->
+  <section class="slide" data-slide="6">
     <div class="problem-detail">
-      <div class="label">Problema 03</div>
+      <div class="label">Problema 02</div>
       <h2>Ficha do GMN<br>Confusa</h2>
       <p class="description">
         4 serviços duplicados (ex: "Cirurgias" e "Cirurgia Veterinária" listados como dois serviços separados) confundiam o algoritmo do Google.
@@ -937,10 +913,10 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 8 - PROBLEMA 4 -->
-  <section class="slide" data-slide="8">
+  <!-- SLIDE 7 - PROBLEMA 3 (Saldo) -->
+  <section class="slide" data-slide="7">
     <div class="problem-detail">
-      <div class="label">Problema 04</div>
+      <div class="label">Problema 03</div>
       <h2>Saldo da Conta<br>com Alerta Vermelho</h2>
       <p class="description">
         A conta de Google Ads está com aviso de saldo crítico no painel.
@@ -955,8 +931,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 9 - GMN -->
-  <section class="slide" data-slide="9">
+  <!-- SLIDE 8 - GMN -->
+  <section class="slide" data-slide="8">
     <span class="tag green">Otimizações 01 / 03</span>
     <span class="script" style="font-size: 2rem;">a ficha do</span>
     <h2>Google Meu Negócio</h2>
@@ -988,11 +964,11 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 10 - GOOGLE ADS -->
-  <section class="slide" data-slide="10">
+  <!-- SLIDE 9 - GOOGLE ADS -->
+  <section class="slide" data-slide="9">
     <span class="tag green">Otimizações 02 / 03</span>
     <span class="script" style="font-size: 2rem;">na conta de</span>
-    <h2>Google Ads · 8 ações</h2>
+    <h2>Google Ads · 6 ações</h2>
     <div class="optimization-list">
       <div class="opt-item removed">
         <div class="icon">❌</div>
@@ -1001,10 +977,6 @@ p {
       <div class="opt-item removed">
         <div class="icon">❌</div>
         <div class="text"><strong>Pausadas</strong> "problemas de pele cachorro" + "otite veterinária" — CTR de 0,3%</div>
-      </div>
-      <div class="opt-item changed">
-        <div class="icon">⬇</div>
-        <div class="text">Hospital Veterinário <strong>R$ 60 → R$ 30/dia</strong> (em observação até validar tracking)</div>
       </div>
       <div class="opt-item changed">
         <div class="icon">⬆</div>
@@ -1019,18 +991,14 @@ p {
         <div class="text">Criada lista <strong>"Negativas Universais HVSB"</strong> (21 termos, 9 campanhas)</div>
       </div>
       <div class="opt-item">
-        <div class="icon">✅</div>
-        <div class="text"><strong>URL final corrigida</strong> dos 4 anúncios da Hospital Veterinário (era 404)</div>
-      </div>
-      <div class="opt-item">
-        <div class="icon">🔄</div>
-        <div class="text"><strong>Reativada</strong> campanha Institucional (volume insuficiente para julgamento)</div>
+        <div class="icon">➕</div>
+        <div class="text"><strong>Criado novo grupo</strong> Ultrassom Veterinário em Especialidades</div>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 11 - TRACKING -->
-  <section class="slide" data-slide="11">
+  <!-- SLIDE 10 - TRACKING -->
+  <section class="slide" data-slide="10">
     <span class="tag green">Otimizações 03 / 03</span>
     <span class="script" style="font-size: 2rem;">o coração técnico</span>
     <h2>Tracking · GA4 + GTM</h2>
@@ -1060,8 +1028,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 12 - 3 ONDAS -->
-  <section class="slide" data-slide="12">
+  <!-- SLIDE 11 - 3 ONDAS -->
+  <section class="slide" data-slide="11">
     <span class="tag">Bloco 04 · Resultados</span>
     <span class="script" style="font-size: 2rem;">o que esperar</span>
     <h2>Impacto em 3 ondas</h2>
@@ -1099,8 +1067,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 13 - P0 -->
-  <section class="slide" data-slide="13">
+  <!-- SLIDE 12 - P0 -->
+  <section class="slide" data-slide="12">
     <span class="tag red">Próximos Passos · P0</span>
     <span class="script" style="font-size: 2rem;">próximas</span>
     <h2>48 horas</h2>
@@ -1146,8 +1114,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 14 - P1 -->
-  <section class="slide" data-slide="14">
+  <!-- SLIDE 13 - P1 -->
+  <section class="slide" data-slide="13">
     <span class="tag gold">Próximos Passos · P1</span>
     <span class="script" style="font-size: 2rem;">próximas</span>
     <h2>2-3 semanas</h2>
@@ -1192,8 +1160,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 15 - P2/P3 -->
-  <section class="slide" data-slide="15">
+  <!-- SLIDE 14 - P2/P3 -->
+  <section class="slide" data-slide="14">
     <span class="tag green">Próximos Passos · P2 e P3</span>
     <span class="script" style="font-size: 2rem;">visão de</span>
     <h2>Mês 2 e além</h2>
@@ -1237,8 +1205,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 16 - PERGUNTAS -->
-  <section class="slide" data-slide="16">
+  <!-- SLIDE 15 - PERGUNTAS -->
+  <section class="slide" data-slide="15">
     <span class="tag">Bloco 06 · Perguntas</span>
     <span class="script" style="font-size: 2rem;">precisamos saber</span>
     <h2>Para avançar, dependo de vocês</h2>
@@ -1262,18 +1230,18 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 17 - ENCERRAMENTO -->
-  <section class="slide" data-slide="17">
+  <!-- SLIDE 16 - ENCERRAMENTO -->
+  <section class="slide" data-slide="16">
     <div class="closing">
       <span class="tag green">Para Fechar</span>
       <span class="script-accent">o essencial</span>
       <h2>em uma frase</h2>
       <p>
-        A conta tinha <strong>dois grandes vazamentos</strong><br>que custavam metade do investimento.
+        O algoritmo das campanhas otimizava com base em <strong>sinal errado</strong>:<br>cliques de saída em vez de WhatsApp e ligações.
       </p>
       <p style="color: var(--blue-light);">
-        URL quebrada e tracking errado.<br>
-        <span style="color: var(--green); font-weight: 700;">Os dois foram corrigidos hoje.</span>
+        Hoje, isso foi corrigido na raiz.<br>
+        <span style="color: var(--green); font-weight: 700;">Smart Bidding agora aprende com lead real.</span>
       </p>
       <p style="margin-top: 2.5rem; font-size: 1.4rem;">
         Em 30 dias, vocês devem enxergar<br>
@@ -1287,7 +1255,7 @@ p {
 </div>
 
 <div class="slide-counter">
-  <span class="current" id="current">01</span> · <span id="total">17</span>
+  <span class="current" id="current">01</span> · <span id="total">16</span>
 </div>
 
 <div class="nav-controls">
