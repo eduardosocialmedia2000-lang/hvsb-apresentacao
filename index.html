@@ -736,6 +736,100 @@ p {
   border-radius: 2px;
 }
 
+/* CAUSE BLOCKS - explicação do tracking */
+.cause-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 2rem;
+}
+.cause-card {
+  padding: 2rem;
+  border-radius: 4px;
+  border: 1px solid rgba(169, 214, 232, 0.2);
+}
+.cause-card.ok {
+  background: rgba(74, 155, 126, 0.1);
+  border-color: rgba(74, 155, 126, 0.4);
+  border-left: 4px solid var(--green);
+}
+.cause-card.gap {
+  background: rgba(212, 163, 64, 0.1);
+  border-color: rgba(212, 163, 64, 0.4);
+  border-left: 4px solid var(--gold);
+}
+.cause-card .cause-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.cause-card .cause-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+.cause-card.ok .cause-label { color: var(--green); }
+.cause-card.gap .cause-label { color: var(--gold); }
+.cause-card h4 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--white);
+}
+.cause-card p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 1rem;
+}
+.cause-card .access-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--blue-light);
+  border-radius: 3px;
+  color: var(--blue-light);
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+.cause-card .access-link:hover {
+  background: var(--blue-light);
+  color: var(--navy-deep);
+}
+.cause-card .access-link::after {
+  content: '↗';
+  font-size: 1rem;
+}
+
+.analogy-box {
+  margin-top: 2rem;
+  padding: 1.3rem 2rem;
+  background: rgba(212, 163, 64, 0.08);
+  border-radius: 4px;
+  border-left: 3px solid var(--gold);
+  max-width: 1000px;
+  text-align: center;
+}
+.analogy-box .analogy-text {
+  font-family: 'Allura', cursive;
+  font-size: 1.5rem;
+  color: var(--gold-light);
+  line-height: 1.4;
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
   .slide { padding: 2rem 1.5rem; }
@@ -895,8 +989,41 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 6 - PROBLEMA 2 (GMN) -->
+  <!-- SLIDE 6 - POR QUE O TRACKING ESTAVA "DESLIGADO" -->
   <section class="slide" data-slide="6">
+    <span class="tag outline">Detalhe técnico</span>
+    <span class="script" style="font-size: 2rem;">por que isso aconteceu?</span>
+    <h2 style="margin-bottom: 1rem;">A causa raiz</h2>
+    <p style="max-width: 850px; text-align: center; color: var(--blue-light); margin-bottom: 1rem;">
+      O tracking não estava "desligado". Estava disparando — mas faltava um passo final no GA4 que conecta o sinal ao Google Ads.
+    </p>
+    <div class="cause-grid">
+      <div class="cause-card ok">
+        <div class="cause-icon">✅</div>
+        <div class="cause-label">Já estava OK</div>
+        <h4>GTM impecável</h4>
+        <p>
+          As tags <strong style="color: var(--green);">phone_call_click</strong> e <strong style="color: var(--green);">whatsapp_click</strong> estavam configuradas e disparando corretamente. 4 mil eventos registrados em 7 dias.
+        </p>
+        <a href="https://tagmanager.google.com/?authuser=1#/container/accounts/6346660398/containers/247626200/workspaces/11/tags" target="_blank" class="access-link">Abrir GTM</a>
+      </div>
+      <div class="cause-card gap">
+        <div class="cause-icon">⭐</div>
+        <div class="cause-label">Faltava o passo final</div>
+        <h4>Estrela apagada no GA4</h4>
+        <p>
+          Os eventos chegavam no GA4 mas não estavam marcados como <strong style="color: var(--gold);">Eventos Principais</strong> — passo manual necessário para o Google Ads importar como conversão.
+        </p>
+        <a href="https://analytics.google.com/analytics/web/?authuser=1#/a389759503p531044033/admin/keyevents/landing" target="_blank" class="access-link">Abrir GA4</a>
+      </div>
+    </div>
+    <div class="analogy-box">
+      <div class="analogy-text">"Câmeras gravando 24h, mas ninguém olhando as gravações."</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 - PROBLEMA 2 (GMN) -->
+  <section class="slide" data-slide="7">
     <div class="problem-detail">
       <div class="label">Problema 02</div>
       <h2>Ficha do GMN<br>Confusa</h2>
@@ -913,8 +1040,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 7 - PROBLEMA 3 (Saldo) -->
-  <section class="slide" data-slide="7">
+  <!-- SLIDE 8 - PROBLEMA 3 (Saldo) -->
+  <section class="slide" data-slide="8">
     <div class="problem-detail">
       <div class="label">Problema 03</div>
       <h2>Saldo da Conta<br>com Alerta Vermelho</h2>
@@ -931,8 +1058,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 8 - GMN -->
-  <section class="slide" data-slide="8">
+  <!-- SLIDE 9 - GMN -->
+  <section class="slide" data-slide="9">
     <span class="tag green">Otimizações 01 / 03</span>
     <span class="script" style="font-size: 2rem;">a ficha do</span>
     <h2>Google Meu Negócio</h2>
@@ -964,8 +1091,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 9 - GOOGLE ADS -->
-  <section class="slide" data-slide="9">
+  <!-- SLIDE 10 - GOOGLE ADS -->
+  <section class="slide" data-slide="10">
     <span class="tag green">Otimizações 02 / 03</span>
     <span class="script" style="font-size: 2rem;">na conta de</span>
     <h2>Google Ads · 6 ações</h2>
@@ -997,8 +1124,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 10 - TRACKING -->
-  <section class="slide" data-slide="10">
+  <!-- SLIDE 11 - TRACKING -->
+  <section class="slide" data-slide="11">
     <span class="tag green">Otimizações 03 / 03</span>
     <span class="script" style="font-size: 2rem;">o coração técnico</span>
     <h2>Tracking · GA4 + GTM</h2>
@@ -1028,8 +1155,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 11 - 3 ONDAS -->
-  <section class="slide" data-slide="11">
+  <!-- SLIDE 12 - 3 ONDAS -->
+  <section class="slide" data-slide="12">
     <span class="tag">Bloco 04 · Resultados</span>
     <span class="script" style="font-size: 2rem;">o que esperar</span>
     <h2>Impacto em 3 ondas</h2>
@@ -1067,8 +1194,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 12 - P0 -->
-  <section class="slide" data-slide="12">
+  <!-- SLIDE 13 - P0 -->
+  <section class="slide" data-slide="13">
     <span class="tag red">Próximos Passos · P0</span>
     <span class="script" style="font-size: 2rem;">próximas</span>
     <h2>48 horas</h2>
@@ -1114,8 +1241,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 13 - P1 -->
-  <section class="slide" data-slide="13">
+  <!-- SLIDE 14 - P1 -->
+  <section class="slide" data-slide="14">
     <span class="tag gold">Próximos Passos · P1</span>
     <span class="script" style="font-size: 2rem;">próximas</span>
     <h2>2-3 semanas</h2>
@@ -1160,8 +1287,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 14 - P2/P3 -->
-  <section class="slide" data-slide="14">
+  <!-- SLIDE 15 - P2/P3 -->
+  <section class="slide" data-slide="15">
     <span class="tag green">Próximos Passos · P2 e P3</span>
     <span class="script" style="font-size: 2rem;">visão de</span>
     <h2>Mês 2 e além</h2>
@@ -1205,8 +1332,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 15 - PERGUNTAS -->
-  <section class="slide" data-slide="15">
+  <!-- SLIDE 16 - PERGUNTAS -->
+  <section class="slide" data-slide="16">
     <span class="tag">Bloco 06 · Perguntas</span>
     <span class="script" style="font-size: 2rem;">precisamos saber</span>
     <h2>Para avançar, dependo de vocês</h2>
@@ -1230,8 +1357,8 @@ p {
     </div>
   </section>
 
-  <!-- SLIDE 16 - ENCERRAMENTO -->
-  <section class="slide" data-slide="16">
+  <!-- SLIDE 17 - ENCERRAMENTO -->
+  <section class="slide" data-slide="17">
     <div class="closing">
       <span class="tag green">Para Fechar</span>
       <span class="script-accent">o essencial</span>
@@ -1255,7 +1382,7 @@ p {
 </div>
 
 <div class="slide-counter">
-  <span class="current" id="current">01</span> · <span id="total">16</span>
+  <span class="current" id="current">01</span> · <span id="total">17</span>
 </div>
 
 <div class="nav-controls">
