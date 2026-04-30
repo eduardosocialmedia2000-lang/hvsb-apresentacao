@@ -3,845 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auditoria & Otimização HVSB | Sigma</title>
+<title>Resultados HVSB · Abril 2026 | Sigma</title>
 <link rel="icon" type="image/svg+xml" href="https://static.wixstatic.com/shapes/167cba_c76d768559744f90b364541c6ff3aa51.svg">
-<link rel="shortcut icon" href="https://static.wixstatic.com/shapes/167cba_c76d768559744f90b364541c6ff3aa51.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Allura&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Allura&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  /* Paleta inspirada no Instagram do HVSB */
-  --navy-deep:    #0A3D5F;   /* navy mais escuro - background principal */
-  --navy:         #0E5C8C;   /* azul médio do hospital - principal */
-  --blue:         #1B6FB8;   /* azul médio mais saturado - acentos */
-  --blue-light:   #A9D6E8;   /* azul claro do escudo/logo */
-  --blue-soft:    #D4E9F2;   /* azul muito claro - sutil */
-  --gold:         #D4A340;   /* dourado dos badges 57 anos */
-  --gold-light:   #E8C77B;   /* dourado claro */
-  --white:        #FFFFFF;
-  --cream:        #FAF8F3;   /* off-white */
-  --gray:         #6B7280;
-  --red:          #C44545;   /* vermelho discreto pra alertas */
-  --green:        #4A9B7E;   /* verde discreto pra sucesso */
+  --navy-deep: #0A3D5F;
+  --navy:      #0E5C8C;
+  --blue:      #1B6FB8;
+  --blue-light:#A9D6E8;
+  --gold:      #D4A340;
+  --gold-light:#E8C77B;
+  --white:     #FFFFFF;
+  --red:       #C44545;
+  --green:     #4A9B7E;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white); }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: 'Inter', sans-serif;
-  background: var(--navy-deep);
-  color: var(--white);
-}
-
-.deck {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
+.deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
 
 .slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
   padding: 4rem 5rem;
-  opacity: 0;
-  transform: translateX(50px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0; transform: translateX(50px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
   pointer-events: none;
   background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 60%, #061F33 100%);
 }
+.slide.active  { opacity: 1; transform: translateX(0); pointer-events: all; }
+.slide.prev    { transform: translateX(-50px); }
 
-.slide.active {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: all;
+.slide::before {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(169,214,232,0.07) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.slide.prev { transform: translateX(-50px); }
-
-/* Tipografia - Montserrat para títulos (com peso forte tipo Instagram), Allura pra script */
-h1, h2, h3, h4 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 1.05;
-  text-transform: uppercase;
-}
-
+h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: -0.01em; line-height: 1.05; text-transform: uppercase; }
 h1 { font-size: clamp(2.8rem, 5.5vw, 5rem); }
-h2 { font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 1.5rem; }
-h3 { font-size: clamp(1.5rem, 2.5vw, 2.2rem); margin-bottom: 1rem; }
-h4 { font-size: clamp(1.05rem, 1.6vw, 1.4rem); margin-bottom: 0.5rem; }
+h2 { font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 1.2rem; }
 
-.script {
-  font-family: 'Allura', cursive;
-  text-transform: none;
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0;
-  color: var(--blue-light);
-}
-
-p {
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
-  line-height: 1.65;
-  color: rgba(255,255,255,0.88);
-  font-weight: 400;
-}
+.script { font-family: 'Allura', cursive; text-transform: none; font-weight: 400; color: var(--blue-light); }
 
 .tag {
-  display: inline-block;
-  padding: 0.4rem 1rem;
-  background: var(--blue);
-  color: white;
-  border-radius: 2px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  margin-bottom: 1.5rem;
+  display: inline-block; padding: 0.35rem 0.9rem;
+  background: var(--blue); color: white; border-radius: 2px;
+  font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 1.2rem;
   border: 1px solid var(--blue-light);
 }
-.tag.gold { background: var(--gold); color: var(--navy-deep); border-color: var(--gold-light); }
+.tag.gold  { background: var(--gold); color: var(--navy-deep); border-color: var(--gold-light); }
 .tag.green { background: var(--green); border-color: rgba(255,255,255,0.3); }
-.tag.red { background: var(--red); border-color: rgba(255,255,255,0.3); }
-.tag.outline { background: transparent; color: var(--blue-light); border-color: var(--blue-light); }
 
-/* Background pattern decorativo */
-.slide::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(169, 214, 232, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-.slide::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(27, 111, 184, 0.1) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-/* SLIDE 1 - CAPA */
-.slide-cover {
-  text-align: center;
-  position: relative;
-}
+/* CAPA */
+.slide-cover { text-align: center; }
 .slide-cover h1 {
-  text-transform: uppercase;
   background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
-  font-weight: 900;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  font-weight: 900; margin-bottom: 0.5rem;
 }
-.slide-cover .script-accent {
-  font-family: 'Allura', cursive;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  color: var(--blue-light);
-  margin-bottom: 1rem;
-  display: block;
-}
-.slide-cover .subtitle {
-  font-family: 'Montserrat', sans-serif;
-  font-size: clamp(1rem, 1.5vw, 1.3rem);
-  color: var(--blue-light);
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin-bottom: 3rem;
-  margin-top: 1rem;
-}
-.shield-decoration {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 2rem;
-  background: var(--blue);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid var(--blue-light);
-  box-shadow: 0 0 40px rgba(169, 214, 232, 0.3);
-  position: relative;
-}
-.shield-decoration::after {
-  content: '';
-  width: 35px;
-  height: 40px;
-  background: var(--blue-light);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 70%, 50% 100%, 0% 70%, 0% 25%);
-}
-.slide-cover .meta {
-  display: flex;
-  gap: 4rem;
-  justify-content: center;
-  margin-top: 4rem;
-  opacity: 0.85;
-}
-.slide-cover .meta div { text-align: center; }
-.slide-cover .meta .label {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: var(--gold);
-}
-.slide-cover .meta .value {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--white);
-}
+.script-accent { font-family: 'Allura', cursive; font-size: clamp(2.5rem,5vw,4rem); color: var(--blue-light); display: block; margin-bottom: 0.5rem; }
+.subtitle { font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--blue-light); font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 3rem; margin-top: 0.8rem; }
 
-/* AGENDA */
-.agenda-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  max-width: 950px;
-  margin-top: 2rem;
-}
-.agenda-item {
-  background: rgba(169, 214, 232, 0.05);
-  border: 1px solid rgba(169, 214, 232, 0.15);
-  border-left: 4px solid var(--blue-light);
-  padding: 1.3rem 1.8rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  transition: background 0.2s;
-}
-.agenda-item:hover { background: rgba(169, 214, 232, 0.1); }
-.agenda-item .num {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.2rem;
-  color: var(--blue-light);
-  font-weight: 800;
-  min-width: 50px;
-  line-height: 1;
-}
-.agenda-item .text { flex: 1; }
-.agenda-item .name {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.agenda-item .time {
-  font-size: 0.8rem;
-  color: var(--gold);
-  margin-top: 0.3rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
+.meta { display: flex; gap: 4rem; justify-content: center; margin-top: 3rem; opacity: 0.85; }
+.meta > div { text-align: center; }
+.meta .label { font-family: 'Montserrat', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.25em; font-weight: 600; margin-bottom: 0.4rem; color: var(--gold); }
+.meta .value { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.9rem; }
 
-/* IMPACTO */
-.impact-number {
-  font-family: 'Montserrat', sans-serif;
-  font-size: clamp(8rem, 18vw, 16rem);
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-.impact-text {
-  font-family: 'Montserrat', sans-serif;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 700;
-  margin-top: 1rem;
-  text-align: center;
-  max-width: 800px;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-}
-.impact-sub {
-  margin-top: 2.5rem;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
-  color: var(--blue-light);
-  text-align: center;
-  max-width: 700px;
-  line-height: 1.7;
-}
-.impact-sub strong { color: var(--green); font-weight: 700; }
+/* KPI CARDS */
+.kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.2rem; max-width: 1100px; width: 100%; margin-top: 1.5rem; }
+.kpi-card { background: rgba(169,214,232,0.06); border: 1px solid rgba(169,214,232,0.18); padding: 2.2rem 1.5rem; border-radius: 4px; text-align: center; }
+.kpi-card .num { font-family: 'Montserrat', sans-serif; font-size: 4rem; font-weight: 900; line-height: 1; }
+.kpi-card .num.blue  { color: var(--blue-light); }
+.kpi-card .num.green { color: var(--green); }
+.kpi-card .num.gold  { color: var(--gold); }
+.kpi-card .lbl { margin-top: 0.6rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.6); font-weight: 600; }
 
-/* PROBLEMS GRID */
-.problems-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  max-width: 1100px;
-  margin-top: 2rem;
-}
-.problem-card {
-  background: rgba(169, 214, 232, 0.06);
-  border: 1px solid rgba(169, 214, 232, 0.18);
-  padding: 2rem;
-  border-radius: 4px;
-  position: relative;
-  transition: all 0.3s;
-}
-.problem-card:hover {
-  background: rgba(169, 214, 232, 0.1);
-  border-color: var(--blue-light);
-  transform: translateY(-3px);
-}
-.problem-card .icon {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-}
-.problem-card h4 {
-  color: var(--blue-light);
-  margin-bottom: 0.6rem;
-  font-size: 1.15rem;
-}
-.problem-card p {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.78);
-  line-height: 1.6;
-}
-.problem-card .num {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: rgba(169, 214, 232, 0.1);
-  line-height: 1;
-}
+/* COMPARATIVO */
+.comp-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; max-width: 1100px; width: 100%; align-items: center; }
+.comp-box { background: rgba(169,214,232,0.05); border: 1px solid rgba(169,214,232,0.15); border-radius: 10px; padding: 2rem; text-align: center; }
+.comp-box.highlight { background: rgba(74,155,126,0.07); border-color: rgba(74,155,126,0.3); }
+.comp-box .month { font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(169,214,232,0.5); margin-bottom: 1.2rem; font-weight: 700; }
+.comp-box.highlight .month { color: var(--green); }
+.comp-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.comp-inner .val { font-family: 'Montserrat', sans-serif; font-size: 2.4rem; font-weight: 900; line-height: 1; }
+.comp-inner .val.dim  { color: rgba(169,214,232,0.6); }
+.comp-inner .val.vivid { color: var(--blue-light); }
+.comp-inner .val.gold  { color: var(--gold); }
+.comp-inner .val.green { color: var(--green); }
+.comp-inner .sub { font-size: 0.68rem; color: rgba(169,214,232,0.45); margin-top: 0.25rem; font-family: 'Inter', sans-serif; }
+.deltas { display: flex; flex-direction: column; gap: 1.2rem; align-items: center; }
+.delta { text-align: center; }
+.delta .pct { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--green); }
+.delta .pct.warn { color: var(--gold-light); }
+.delta .lbl { font-size: 0.6rem; color: rgba(169,214,232,0.4); font-family: 'Inter', sans-serif; }
 
-/* PROBLEM DETAIL */
-.problem-detail {
-  max-width: 1000px;
-  width: 100%;
-}
-.problem-detail .label {
-  color: var(--gold);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  margin-bottom: 0.8rem;
-  font-weight: 700;
-}
-.problem-detail h2 { margin-bottom: 2rem; }
-.problem-detail .description {
-  font-size: 1.15rem;
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-  color: rgba(255,255,255,0.92);
-}
-.problem-detail .description strong { color: var(--blue-light); font-weight: 600; }
-.problem-detail .impact-box {
-  background: rgba(196, 69, 69, 0.12);
-  border: 1px solid rgba(196, 69, 69, 0.4);
-  border-left: 4px solid var(--red);
-  padding: 1.5rem 2rem;
-  border-radius: 4px;
-  margin-top: 2rem;
-}
-.problem-detail .impact-box .impact-label {
-  font-family: 'Montserrat', sans-serif;
-  color: var(--red);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-bottom: 0.6rem;
-  font-weight: 700;
-}
-.problem-detail .impact-box .impact-value {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-}
+/* TABELA */
+.camp-table { width: 100%; border-collapse: collapse; font-family: 'Inter', sans-serif; font-size: 0.8rem; }
+.camp-table th { text-align: left; padding: 0.55rem 0.6rem; color: var(--blue-light); font-family: 'Montserrat', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid rgba(169,214,232,0.3); }
+.camp-table th.r { text-align: right; }
+.camp-table td { padding: 0.6rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.camp-table td.r { text-align: right; }
+.camp-table tr:hover td { background: rgba(169,214,232,0.04); }
+.badge { background: rgba(212,163,64,0.15); border: 1px solid rgba(212,163,64,0.4); color: var(--gold); font-size: 0.6rem; padding: 0.15rem 0.4rem; border-radius: 2px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.good { color: var(--green); font-weight: 700; }
+.bad  { color: var(--red);   font-weight: 700; }
 
-/* OPTIMIZATION LIST */
-.optimization-list {
-  max-width: 1000px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  margin-top: 1.5rem;
-}
-.opt-item {
-  background: rgba(169, 214, 232, 0.06);
-  border: 1px solid rgba(169, 214, 232, 0.1);
-  padding: 1rem 1.5rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  border-left: 3px solid var(--green);
-}
-.opt-item.removed { border-left-color: var(--red); }
-.opt-item.changed { border-left-color: var(--gold); }
-.opt-item .icon { font-size: 1.3rem; min-width: 30px; }
-.opt-item .text { flex: 1; font-size: 1rem; line-height: 1.5; }
-.opt-item .text strong { color: var(--blue-light); font-weight: 600; }
+/* PRÓXIMOS AJUSTES */
+.ajustes { display: flex; flex-direction: column; gap: 0.75rem; max-width: 1000px; width: 100%; margin-top: 1.2rem; }
+.ajuste-item { display: flex; align-items: flex-start; gap: 1.2rem; background: rgba(169,214,232,0.05); border: 1px solid rgba(169,214,232,0.12); border-left: 3px solid var(--gold); padding: 1rem 1.5rem; border-radius: 4px; }
+.ajuste-item.done { border-left-color: var(--green); }
+.ajuste-num { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 900; color: var(--gold); line-height: 1; min-width: 28px; margin-top: 0.1rem; }
+.ajuste-item.done .ajuste-num { color: var(--green); }
+.ajuste-txt { font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.55; }
+.ajuste-txt strong { color: var(--blue-light); }
 
-/* STATS */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  max-width: 900px;
-  width: 100%;
-  margin-top: 2rem;
-}
-.stat-card {
-  background: rgba(169, 214, 232, 0.06);
-  border: 1px solid rgba(169, 214, 232, 0.18);
-  padding: 2.5rem 1.5rem;
-  border-radius: 4px;
-  text-align: center;
-}
-.stat-card .num {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 4.5rem;
-  font-weight: 900;
-  line-height: 1;
-}
-.stat-card .num.red { color: var(--red); }
-.stat-card .num.green { color: var(--green); }
-.stat-card .num.blue { color: var(--blue-light); }
-.stat-card .label {
-  margin-top: 0.7rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255,255,255,0.7);
-  font-weight: 600;
-}
+/* ENCERRAMENTO */
+.closing { text-align: center; max-width: 800px; }
+.closing .script-accent { font-family: 'Allura', cursive; font-size: clamp(2.5rem,5vw,4rem); color: var(--blue-light); display: block; margin-bottom: 0.5rem; }
+.closing h2 { background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2rem; }
+.closing p { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.88); margin-bottom: 1rem; }
+.closing p strong { color: var(--gold); }
+.signature { margin-top: 2.5rem; font-family: 'Montserrat', sans-serif; font-size: 0.78rem; color: var(--blue-light); letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; }
+.signature::before, .signature::after { content: '◆'; margin: 0 1rem; color: var(--gold); opacity: 0.6; }
 
-/* SPECIALTIES GRID */
-.specialties-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.7rem;
-  max-width: 900px;
-  margin-top: 1.5rem;
-}
-.spec-tag {
-  background: rgba(169, 214, 232, 0.1);
-  border: 1px solid rgba(169, 214, 232, 0.3);
-  padding: 0.7rem 1rem;
-  border-radius: 3px;
-  font-size: 0.88rem;
-  text-align: center;
-  color: var(--white);
-  font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
-}
-.spec-tag.new {
-  background: rgba(74, 155, 126, 0.15);
-  border-color: rgba(74, 155, 126, 0.5);
-}
-
-/* WAVES */
-.waves {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  max-width: 1000px;
-  width: 100%;
-  margin-top: 2rem;
-}
-.wave {
-  display: flex;
-  gap: 2rem;
-  background: rgba(169, 214, 232, 0.06);
-  border: 1px solid rgba(169, 214, 232, 0.15);
-  padding: 1.5rem 2rem;
-  border-radius: 4px;
-  align-items: center;
-}
-.wave-time {
-  font-family: 'Montserrat', sans-serif;
-  background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
-  border: 1px solid var(--blue-light);
-  color: white;
-  padding: 1.2rem 1.5rem;
-  border-radius: 4px;
-  text-align: center;
-  min-width: 140px;
-}
-.wave-time .num {
-  font-size: 2.2rem;
-  font-weight: 900;
-  display: block;
-  line-height: 1;
-}
-.wave-time .label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-top: 0.4rem;
-  font-weight: 600;
-  color: var(--blue-light);
-}
-.wave-content { flex: 1; }
-.wave-content h4 { color: var(--blue-light); margin-bottom: 0.4rem; font-size: 1.2rem; }
-.wave-content p { font-size: 0.95rem; }
-.wave-content strong { color: var(--gold); font-weight: 600; }
-
-/* PRIO CARDS */
-.prio-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.2rem;
-  max-width: 1100px;
-  width: 100%;
-  margin-top: 1.5rem;
-}
-.prio-card {
-  background: rgba(169, 214, 232, 0.06);
-  border: 1px solid rgba(169, 214, 232, 0.15);
-  padding: 1.5rem;
-  border-radius: 4px;
-  border-top: 3px solid var(--blue-light);
-}
-.prio-card.p0 { border-top-color: var(--red); }
-.prio-card.p1 { border-top-color: var(--gold); }
-.prio-card.p2 { border-top-color: var(--green); }
-.prio-card.p3 { border-top-color: var(--blue-light); }
-.prio-card .prio-label {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  margin-bottom: 0.6rem;
-  font-weight: 700;
-}
-.prio-card h4 {
-  color: white;
-  margin-bottom: 1rem;
-  font-size: 1.05rem;
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 700;
-}
-.prio-card ul { list-style: none; padding: 0; }
-.prio-card li {
-  padding: 0.5rem 0 0.5rem 1.2rem;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.8);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  position: relative;
-  line-height: 1.5;
-}
-.prio-card li::before {
-  content: '◆';
-  position: absolute;
-  left: 0;
-  color: var(--blue-light);
-  font-size: 0.6rem;
-  top: 0.85rem;
-}
-.prio-card li:last-child { border-bottom: none; }
-
-/* QUESTIONS */
-.question-list {
-  max-width: 1000px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-.question-item {
-  background: rgba(27, 111, 184, 0.12);
-  border: 1px solid rgba(169, 214, 232, 0.25);
-  border-left: 4px solid var(--blue-light);
-  padding: 1.5rem 2rem;
-  border-radius: 4px;
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-.question-item .num {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.3rem;
-  font-weight: 900;
-  color: var(--gold);
-  line-height: 1;
-  min-width: 60px;
-}
-.question-item .text {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: rgba(255,255,255,0.92);
-}
-
-/* CLOSING */
-.closing { text-align: center; max-width: 900px; }
-.closing .script-accent {
-  font-family: 'Allura', cursive;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  color: var(--blue-light);
-  margin-bottom: 0.5rem;
-  display: block;
-  text-transform: none;
-}
-.closing h2 {
-  background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 2rem;
-}
-.closing p { font-size: 1.25rem; line-height: 1.8; margin-bottom: 1.5rem; }
-.closing p strong { color: var(--gold); font-weight: 700; }
-.closing .signature {
-  margin-top: 3rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  color: var(--blue-light);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-.closing .signature::before, .closing .signature::after {
-  content: '◆';
-  margin: 0 1rem;
-  color: var(--gold);
-  opacity: 0.6;
-}
-
-/* INFO BOX */
-.info-box {
-  max-width: 800px;
-  margin-top: 2rem;
-  padding: 1.5rem 2rem;
-  background: rgba(27, 111, 184, 0.15);
-  border: 1px solid rgba(169, 214, 232, 0.3);
-  border-radius: 4px;
-  border-left: 4px solid var(--gold);
-}
-.info-box strong { color: var(--gold); font-weight: 700; }
-
-/* NAVIGATION */
-.nav-controls {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
-  gap: 0.5rem;
-  z-index: 100;
-}
-.nav-btn {
-  background: rgba(169, 214, 232, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--blue-light);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.4rem;
-  font-weight: 700;
-  transition: all 0.2s;
-  font-family: 'Montserrat', sans-serif;
-}
-.nav-btn:hover {
-  background: var(--blue-light);
-  color: var(--navy-deep);
-}
-.nav-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.slide-counter {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  color: rgba(169, 214, 232, 0.5);
-  letter-spacing: 0.2em;
-  z-index: 100;
-  font-weight: 600;
-}
+/* NAV */
+.progress-bar { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: rgba(169,214,232,0.1); z-index: 99; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 50%, var(--gold) 100%); width: 0%; transition: width 0.4s ease; }
+.deck-logo { position: fixed; top: 1.5rem; right: 2rem; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; color: rgba(169,214,232,0.45); letter-spacing: 0.3em; text-transform: uppercase; z-index: 99; font-weight: 600; }
+.deck-logo .gold { color: var(--gold); }
+.nav-controls { position: fixed; bottom: 2rem; right: 2rem; display: flex; gap: 0.5rem; z-index: 100; }
+.nav-btn { background: rgba(169,214,232,0.1); border: 1px solid var(--blue-light); width: 46px; height: 46px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; font-weight: 700; transition: all 0.2s; font-family: 'Montserrat', sans-serif; }
+.nav-btn:hover { background: var(--blue-light); color: var(--navy-deep); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.slide-counter { position: fixed; bottom: 2rem; left: 2rem; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: rgba(169,214,232,0.45); letter-spacing: 0.2em; z-index: 100; font-weight: 600; }
 .slide-counter .current { color: var(--gold); font-weight: 700; }
 
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: rgba(169, 214, 232, 0.1);
-  z-index: 99;
-}
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 50%, var(--gold) 100%);
-  width: 0%;
-  transition: width 0.4s ease;
-}
-
-.deck-logo {
-  position: fixed;
-  top: 1.5rem;
-  right: 2rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
-  color: rgba(169, 214, 232, 0.5);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  z-index: 99;
-  font-weight: 600;
-}
-.deck-logo .gold { color: var(--gold); }
-
-.accent-line {
-  width: 80px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 100%);
-  margin: 1.5rem 0;
-  border-radius: 2px;
-}
-
-/* CAUSE BLOCKS - explicação do tracking */
-.cause-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  max-width: 1100px;
-  width: 100%;
-  margin-top: 2rem;
-}
-.cause-card {
-  padding: 2rem;
-  border-radius: 4px;
-  border: 1px solid rgba(169, 214, 232, 0.2);
-}
-.cause-card.ok {
-  background: rgba(74, 155, 126, 0.1);
-  border-color: rgba(74, 155, 126, 0.4);
-  border-left: 4px solid var(--green);
-}
-.cause-card.gap {
-  background: rgba(212, 163, 64, 0.1);
-  border-color: rgba(212, 163, 64, 0.4);
-  border-left: 4px solid var(--gold);
-}
-.cause-card .cause-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-.cause-card .cause-label {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  font-weight: 700;
-  margin-bottom: 0.6rem;
-}
-.cause-card.ok .cause-label { color: var(--green); }
-.cause-card.gap .cause-label { color: var(--gold); }
-.cause-card h4 {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  text-transform: none;
-  letter-spacing: 0;
-  color: var(--white);
-}
-.cause-card p {
-  font-size: 0.95rem;
-  line-height: 1.65;
-  color: rgba(255,255,255,0.85);
-  margin-bottom: 1rem;
-}
-.cause-card .access-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  padding: 0.6rem 1rem;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--blue-light);
-  border-radius: 3px;
-  color: var(--blue-light);
-  text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: all 0.2s;
-}
-.cause-card .access-link:hover {
-  background: var(--blue-light);
-  color: var(--navy-deep);
-}
-.cause-card .access-link::after {
-  content: '↗';
-  font-size: 1rem;
-}
-
-.analogy-box {
-  margin-top: 2rem;
-  padding: 1.3rem 2rem;
-  background: rgba(212, 163, 64, 0.08);
-  border-radius: 4px;
-  border-left: 3px solid var(--gold);
-  max-width: 1000px;
-  text-align: center;
-}
-.analogy-box .analogy-text {
-  font-family: 'Allura', cursive;
-  font-size: 1.5rem;
-  color: var(--gold-light);
-  line-height: 1.4;
-}
-
-/* MOBILE */
 @media (max-width: 768px) {
   .slide { padding: 2rem 1.5rem; }
-  .agenda-grid, .problems-grid, .stats-row, .prio-grid, .specialties-grid {
-    grid-template-columns: 1fr;
-  }
-  .wave { flex-direction: column; gap: 1rem; }
-  .wave-time { width: 100%; }
+  .kpi-row, .comp-grid { grid-template-columns: 1fr 1fr; }
+  .comp-grid { grid-template-columns: 1fr; }
+  .deltas { flex-direction: row; flex-wrap: wrap; gap: 0.8rem; }
   .nav-controls { bottom: 1rem; right: 1rem; }
   .slide-counter { bottom: 1rem; left: 1rem; }
-  .deck-logo { top: 1rem; right: 1rem; font-size: 0.6rem; }
-  .slide-cover .meta { flex-direction: column; gap: 1.5rem; }
+  .meta { flex-direction: column; gap: 1.5rem; }
 }
 </style>
 </head>
@@ -853,549 +165,211 @@ p {
 <div class="deck" id="deck">
 
   <!-- SLIDE 1 - CAPA -->
-  <section class="slide slide-cover active" data-slide="1">
-    <div class="shield-decoration"></div>
-    <span class="script-accent">auditoria &</span>
-    <h1>Otimização HVSB</h1>
-    <div class="subtitle">Resultados · Abril 2026</div>
-    <div class="accent-line" style="margin: 0 auto;"></div>
-    <p style="max-width: 600px; text-align: center; margin-top: 2rem; font-style: italic; color: var(--blue-light);">
-      O que olhamos. O que melhoramos. O que vem por aí.
-    </p>
+  <section class="slide slide-cover active">
+    <span class="script-accent">resultados &</span>
+    <h1>Google Ads HVSB</h1>
+    <div class="subtitle">Abril 2026</div>
     <div class="meta">
-      <div>
-        <div class="label">Cliente</div>
-        <div class="value">Hospital Veterinário<br>São Bernardo</div>
-      </div>
-      <div>
-        <div class="label">Período</div>
-        <div class="value">1 a 30 de Abril<br>de 2026</div>
-      </div>
-      <div>
-        <div class="label">Conta</div>
-        <div class="value">192-048-4711<br>Curitiba/PR</div>
-      </div>
+      <div><div class="label">Cliente</div><div class="value">Hospital Veterinário<br>São Bernardo</div></div>
+      <div><div class="label">Período</div><div class="value">1 a 30 de Abril<br>de 2026</div></div>
+      <div><div class="label">Conta</div><div class="value">192-048-4711<br>Curitiba/PR</div></div>
     </div>
   </section>
 
   <!-- SLIDE 2 - KPIs ABRIL -->
-  <section class="slide" data-slide="2">
-    <span class="tag gold">Resultados · Abril 2026 Completo</span>
-    <span class="script" style="font-size: 2rem;">o que a conta entregou</span>
-    <h2 style="margin-bottom: 0.5rem;">Visão Geral do Mês</h2>
-    <div class="stats-row" style="grid-template-columns: repeat(4,1fr); max-width: 1100px; margin-top: 1.5rem;">
-      <div class="stat-card">
+  <section class="slide">
+    <span class="tag gold">Abril 2026 · Visão Geral</span>
+    <h2>Resultados do mês</h2>
+    <div class="kpi-row">
+      <div class="kpi-card">
         <div class="num blue">2,97<span style="font-size:2rem;">mil</span></div>
-        <div class="label">Cliques</div>
+        <div class="lbl">Cliques</div>
       </div>
-      <div class="stat-card">
+      <div class="kpi-card">
         <div class="num green">281</div>
-        <div class="label">Conversões</div>
+        <div class="lbl">Conversões</div>
       </div>
-      <div class="stat-card">
-        <div class="num" style="color:var(--gold);font-size:3.5rem;">R$10,91</div>
-        <div class="label">Custo / Conversão</div>
+      <div class="kpi-card">
+        <div class="num gold" style="font-size:3.2rem;">R$10,91</div>
+        <div class="lbl">Custo / Conversão</div>
       </div>
-      <div class="stat-card">
-        <div class="num" style="color:var(--gold);font-size:3.2rem;">R$3,07<span style="font-size:1.8rem;">mil</span></div>
-        <div class="label">Investimento Total</div>
+      <div class="kpi-card">
+        <div class="num gold" style="font-size:3rem;">R$3,07<span style="font-size:1.7rem;">mil</span></div>
+        <div class="lbl">Investimento Total</div>
       </div>
     </div>
-    <div class="info-box" style="max-width: 1100px; margin-top: 1.5rem; border-left-color: var(--green);">
-      <p style="font-size:1rem; line-height:1.7;">
-        <strong style="color:var(--green);">6 de 7 campanhas limitadas pelo orçamento</strong> — sinal claro de demanda real. O Google quer gastar mais, mas o budget trava. Cada real adicional tende a virar conversão.
-      </p>
-    </div>
+    <p style="margin-top:1.5rem; font-size:0.85rem; color:rgba(169,214,232,0.5); text-align:center;">
+      6 de 7 campanhas limitadas pelo orçamento — demanda existe, o Google quer gastar mais.
+    </p>
   </section>
 
-  <!-- SLIDE 3 - COMPARATIVO MARÇO vs ABRIL -->
-  <section class="slide" data-slide="3">
-    <span class="tag blue">Comparativo · Março vs Abril 2026</span>
-    <span class="script" style="font-size: 2rem;">evolução mês a mês</span>
-    <h2 style="margin-bottom: 1.5rem;">Março → Abril</h2>
-    <div style="display:grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; max-width: 1100px; width: 100%; align-items: center;">
-      <!-- Março -->
-      <div style="background: rgba(169,214,232,0.05); border: 1px solid rgba(169,214,232,0.15); border-radius: 12px; padding: 2rem; text-align: center;">
-        <div style="font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(169,214,232,0.5); margin-bottom:1.2rem; font-weight:700;">Março 2026</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;">
-          <div>
-            <div style="font-size:2.6rem; font-weight:800; color:var(--blue-light); line-height:1;">801</div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Cliques</div>
-          </div>
-          <div>
-            <div style="font-size:2.6rem; font-weight:800; color:rgba(169,214,232,0.7); line-height:1;">136</div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Conversões</div>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:rgba(212,163,64,0.6); line-height:1;">R$21,22</div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Custo / Conv.</div>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:rgba(212,163,64,0.6); line-height:1;">R$2,89<span style="font-size:1.1rem;">mil</span></div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Investimento</div>
-          </div>
+  <!-- SLIDE 3 - COMPARATIVO -->
+  <section class="slide">
+    <span class="tag">Março → Abril</span>
+    <h2>Comparativo mensal</h2>
+    <div class="comp-grid">
+      <div class="comp-box">
+        <div class="month">Março 2026</div>
+        <div class="comp-inner">
+          <div><div class="val dim">801</div><div class="sub">Cliques</div></div>
+          <div><div class="val dim">136</div><div class="sub">Conversões</div></div>
+          <div><div class="val" style="color:rgba(212,163,64,0.5); font-size:1.8rem;">R$21,22</div><div class="sub">Custo/Conv.</div></div>
+          <div><div class="val" style="color:rgba(212,163,64,0.5); font-size:1.8rem;">R$2,89<span style="font-size:1rem;">mil</span></div><div class="sub">Investimento</div></div>
         </div>
       </div>
-      <!-- Setas -->
-      <div style="display:flex; flex-direction:column; gap:1.5rem; align-items:center;">
-        <div style="text-align:center;">
-          <div style="font-size:1.4rem; color:var(--green); font-weight:800;">+271%</div>
-          <div style="font-size:0.6rem; color:rgba(169,214,232,0.4); font-family:'Inter',sans-serif;">cliques</div>
-        </div>
-        <div style="text-align:center;">
-          <div style="font-size:1.4rem; color:var(--green); font-weight:800;">+107%</div>
-          <div style="font-size:0.6rem; color:rgba(169,214,232,0.4); font-family:'Inter',sans-serif;">conversões</div>
-        </div>
-        <div style="text-align:center;">
-          <div style="font-size:1.4rem; color:var(--green); font-weight:800;">−49%</div>
-          <div style="font-size:0.6rem; color:rgba(169,214,232,0.4); font-family:'Inter',sans-serif;">custo/conv.</div>
-        </div>
-        <div style="text-align:center;">
-          <div style="font-size:1.4rem; color:rgba(212,163,64,0.8); font-weight:800;">+6%</div>
-          <div style="font-size:0.6rem; color:rgba(169,214,232,0.4); font-family:'Inter',sans-serif;">investimento</div>
-        </div>
+      <div class="deltas">
+        <div class="delta"><div class="pct">+271%</div><div class="lbl">cliques</div></div>
+        <div class="delta"><div class="pct">+107%</div><div class="lbl">conversões</div></div>
+        <div class="delta"><div class="pct">−49%</div><div class="lbl">custo/conv.</div></div>
+        <div class="delta"><div class="pct warn">+6%</div><div class="lbl">investimento</div></div>
       </div>
-      <!-- Abril -->
-      <div style="background: rgba(72,199,142,0.06); border: 1px solid rgba(72,199,142,0.25); border-radius: 12px; padding: 2rem; text-align: center;">
-        <div style="font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--green); margin-bottom:1.2rem; font-weight:700;">Abril 2026</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;">
-          <div>
-            <div style="font-size:2.6rem; font-weight:800; color:var(--blue-light); line-height:1;">2,97<span style="font-size:1.6rem;">mil</span></div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Cliques</div>
-          </div>
-          <div>
-            <div style="font-size:2.6rem; font-weight:800; color:var(--green); line-height:1;">281</div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Conversões</div>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:var(--gold); line-height:1;">R$10,91</div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Custo / Conv.</div>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:var(--gold); line-height:1;">R$3,07<span style="font-size:1.1rem;">mil</span></div>
-            <div style="font-size:0.72rem; color:rgba(169,214,232,0.5); margin-top:0.3rem; font-family:'Inter',sans-serif;">Investimento</div>
-          </div>
+      <div class="comp-box highlight">
+        <div class="month">Abril 2026</div>
+        <div class="comp-inner">
+          <div><div class="val vivid">2,97<span style="font-size:1.4rem;">mil</span></div><div class="sub">Cliques</div></div>
+          <div><div class="val green">281</div><div class="sub">Conversões</div></div>
+          <div><div class="val gold" style="font-size:1.8rem;">R$10,91</div><div class="sub">Custo/Conv.</div></div>
+          <div><div class="val gold" style="font-size:1.8rem;">R$3,07<span style="font-size:1rem;">mil</span></div><div class="sub">Investimento</div></div>
         </div>
       </div>
     </div>
-    <p style="margin-top: 1.5rem; font-size: 0.82rem; color: rgba(169,214,232,0.45); text-align: center; font-family:'Inter',sans-serif;">
-      Investimento quase igual (+6%) — conversões dobraram e custo por conversão caiu pela metade.
+    <p style="margin-top:1.2rem; font-size:0.82rem; color:rgba(169,214,232,0.4); text-align:center; font-family:'Inter',sans-serif;">
+      Investimento quase igual — conversões dobraram e custo por conversão caiu pela metade.
     </p>
   </section>
 
   <!-- SLIDE 4 - TABELA DE CAMPANHAS -->
-  <section class="slide" data-slide="3">
-    <span class="tag">Detalhamento · Campanhas</span>
-    <h2 style="font-size:clamp(1.4rem,2.5vw,2.2rem); margin-bottom: 1rem;">Performance por Campanha · Abril 2026</h2>
-    <div style="width: 100%; max-width: 1200px; overflow-x: auto;">
-      <table style="width:100%; border-collapse: collapse; font-family: 'Inter', sans-serif; font-size: 0.82rem;">
+  <section class="slide">
+    <span class="tag">Campanhas · Abril 2026</span>
+    <h2 style="font-size:clamp(1.4rem,2.5vw,2rem); margin-bottom:1rem;">Performance por campanha</h2>
+    <div style="width:100%; max-width:1200px; overflow-x:auto;">
+      <table class="camp-table">
         <thead>
-          <tr style="border-bottom: 2px solid rgba(169,214,232,0.4);">
-            <th style="text-align:left; padding: 0.6rem 0.8rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Campanha</th>
-            <th style="text-align:center; padding: 0.6rem 0.5rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Budget</th>
-            <th style="text-align:center; padding: 0.6rem 0.5rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Status</th>
-            <th style="text-align:right; padding: 0.6rem 0.5rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Cliques</th>
-            <th style="text-align:right; padding: 0.6rem 0.5rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Taxa Conv.</th>
-            <th style="text-align:right; padding: 0.6rem 0.5rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Conv.</th>
-            <th style="text-align:right; padding: 0.6rem 0.5rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">CPC</th>
-            <th style="text-align:right; padding: 0.6rem 0.5rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Custo/Conv.</th>
-            <th style="text-align:right; padding: 0.6rem 0.8rem; color: var(--blue-light); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">Custo</th>
+          <tr>
+            <th>Campanha</th>
+            <th>Status</th>
+            <th class="r">Cliques</th>
+            <th class="r">Taxa Conv.</th>
+            <th class="r">Conv.</th>
+            <th class="r">CPC</th>
+            <th class="r">Custo/Conv.</th>
+            <th class="r">Custo</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="border-bottom: 1px solid rgba(169,214,232,0.1); background: rgba(169,214,232,0.04);">
-            <td style="padding: 0.65rem 0.8rem; color: var(--white); font-weight:500;">Display | Remarketing</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center; color: rgba(255,255,255,0.7);">R$17/dia</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center;"><span style="background:rgba(212,163,64,0.15); border:1px solid rgba(212,163,64,0.4); color:var(--gold); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:2px; font-family:'Montserrat',sans-serif; font-weight:600;">Lim. Orçamento</span></td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--white); font-weight:600;">1.789</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">7,38%</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">132,00</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">R$0,22</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">R$3,01</td>
-            <td style="padding: 0.65rem 0.8rem; text-align:right; color: rgba(255,255,255,0.75);">~R$397</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(169,214,232,0.1);">
-            <td style="padding: 0.65rem 0.8rem; color: var(--white); font-weight:500;">Search · Especialidades Vet.</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center; color: rgba(255,255,255,0.7);">R$33/dia</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center;"><span style="background:rgba(212,163,64,0.15); border:1px solid rgba(212,163,64,0.4); color:var(--gold); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:2px; font-family:'Montserrat',sans-serif; font-weight:600;">Lim. Orçamento</span></td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--white); font-weight:600;">394</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">16,96%</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">66,84</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">R$1,73</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">R$10,21</td>
-            <td style="padding: 0.65rem 0.8rem; text-align:right; color: rgba(255,255,255,0.75);">~R$682</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(169,214,232,0.1); background: rgba(169,214,232,0.04);">
-            <td style="padding: 0.65rem 0.8rem; color: var(--white); font-weight:500;">Search · Domicílio</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center; color: rgba(255,255,255,0.7);">R$25/dia</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center;"><span style="background:rgba(212,163,64,0.15); border:1px solid rgba(212,163,64,0.4); color:var(--gold); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:2px; font-family:'Montserrat',sans-serif; font-weight:600;">Lim. Orçamento</span></td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--white); font-weight:600;">98</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">38,27%</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">37,50</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">R$4,23</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">R$11,06</td>
-            <td style="padding: 0.65rem 0.8rem; text-align:right; color: rgba(255,255,255,0.75);">R$414,75</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(169,214,232,0.1);">
-            <td style="padding: 0.65rem 0.8rem; color: var(--white); font-weight:500;">Search · Branding</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center; color: rgba(255,255,255,0.7);">R$20/dia</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center;"><span style="background:rgba(74,155,126,0.15); border:1px solid rgba(74,155,126,0.4); color:var(--green); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:2px; font-family:'Montserrat',sans-serif; font-weight:600;">Qualificada</span></td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--white); font-weight:600;">129</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">28,87%</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">37,24</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">R$1,15</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--green); font-weight:700;">R$4,00</td>
-            <td style="padding: 0.65rem 0.8rem; text-align:right; color: rgba(255,255,255,0.75);">R$148,88</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(169,214,232,0.1); background: rgba(196,69,69,0.05);">
-            <td style="padding: 0.65rem 0.8rem; color: var(--white); font-weight:500;">Search · Hospital Veterinário</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center; color: rgba(255,255,255,0.7);">R$26/dia</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center;"><span style="background:rgba(212,163,64,0.15); border:1px solid rgba(212,163,64,0.4); color:var(--gold); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:2px; font-family:'Montserrat',sans-serif; font-weight:600;">Lim. Orçamento</span></td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--white); font-weight:600;">335</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">2,16%</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--red); font-weight:700;">7,25</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">R$3,44</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--red); font-weight:700;">R$159,11</td>
-            <td style="padding: 0.65rem 0.8rem; text-align:right; color: rgba(255,255,255,0.75);">R$1.153,04</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(169,214,232,0.1); background: rgba(196,69,69,0.03);">
-            <td style="padding: 0.65rem 0.8rem; color: var(--white); font-weight:500;">Search · Institucional</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center; color: rgba(255,255,255,0.7);">R$5/dia</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center;"><span style="background:rgba(212,163,64,0.15); border:1px solid rgba(212,163,64,0.4); color:var(--gold); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:2px; font-family:'Montserrat',sans-serif; font-weight:600;">Lim. Orçamento</span></td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--white); font-weight:600;">197</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">2,03%</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">4,00</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">R$0,91</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--red); font-weight:700;">R$44,91</td>
-            <td style="padding: 0.65rem 0.8rem; text-align:right; color: rgba(255,255,255,0.75);">R$179,65</td>
+          <tr>
+            <td>Display | Remarketing</td>
+            <td><span class="badge">Lim. Orçamento</span></td>
+            <td class="r">1.789</td>
+            <td class="r">7,38%</td>
+            <td class="r">132,00</td>
+            <td class="r">R$0,22</td>
+            <td class="r good">R$3,01</td>
+            <td class="r">~R$397</td>
           </tr>
           <tr>
-            <td style="padding: 0.65rem 0.8rem; color: var(--white); font-weight:500;">Search · Hospital Vet. Call 📞</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center; color: rgba(255,255,255,0.7);">R$7/dia</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:center;"><span style="background:rgba(212,163,64,0.15); border:1px solid rgba(212,163,64,0.4); color:var(--gold); font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:2px; font-family:'Montserrat',sans-serif; font-weight:600;">Lim. Orçamento</span></td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: var(--white); font-weight:600;">33</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.4);">0,00%</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.4);">0</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.75);">R$2,80</td>
-            <td style="padding: 0.65rem 0.5rem; text-align:right; color: rgba(255,255,255,0.4);">—</td>
-            <td style="padding: 0.65rem 0.8rem; text-align:right; color: rgba(255,255,255,0.75);">R$92,51</td>
+            <td>Search · Especialidades Vet.</td>
+            <td><span class="badge">Lim. Orçamento</span></td>
+            <td class="r">394</td>
+            <td class="r">16,96%</td>
+            <td class="r">66,84</td>
+            <td class="r">R$1,73</td>
+            <td class="r good">R$10,21</td>
+            <td class="r">~R$682</td>
+          </tr>
+          <tr>
+            <td>Search · Domicílio</td>
+            <td><span class="badge">Lim. Orçamento</span></td>
+            <td class="r">98</td>
+            <td class="r">38,27%</td>
+            <td class="r">37,50</td>
+            <td class="r">R$4,23</td>
+            <td class="r good">R$11,06</td>
+            <td class="r">R$414,75</td>
+          </tr>
+          <tr>
+            <td>Search · Branding</td>
+            <td><span class="badge">Lim. Orçamento</span></td>
+            <td class="r">129</td>
+            <td class="r">28,87%</td>
+            <td class="r">37,24</td>
+            <td class="r">R$1,15</td>
+            <td class="r good">R$4,00</td>
+            <td class="r">R$148,88</td>
+          </tr>
+          <tr>
+            <td>Search · Hospital Veterinário</td>
+            <td><span class="badge">Lim. Orçamento</span></td>
+            <td class="r">335</td>
+            <td class="r">2,16%</td>
+            <td class="r">7,25</td>
+            <td class="r">R$3,44</td>
+            <td class="r bad">R$159,11</td>
+            <td class="r">R$1.153,04</td>
+          </tr>
+          <tr>
+            <td>Search · Institucional</td>
+            <td><span class="badge">Lim. Orçamento</span></td>
+            <td class="r">197</td>
+            <td class="r">2,03%</td>
+            <td class="r">4,00</td>
+            <td class="r">R$0,91</td>
+            <td class="r bad">R$44,91</td>
+            <td class="r">R$179,65</td>
+          </tr>
+          <tr>
+            <td>Search · Hospital Vet. Call 📞</td>
+            <td></td>
+            <td class="r">33</td>
+            <td class="r" style="color:rgba(255,255,255,0.4);">0,00%</td>
+            <td class="r" style="color:rgba(255,255,255,0.4);">0</td>
+            <td class="r">R$2,80</td>
+            <td class="r" style="color:rgba(255,255,255,0.4);">—</td>
+            <td class="r">R$92,51</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top: 1rem; font-size: 0.8rem; color: rgba(169,214,232,0.5); text-align: center;">
-      ⚠ Hospital Vet. → <strong>especialidades.hvsb.com.br</strong> (urgência 24h) — 335 cliques, só 7,25 conv. (R$159/conv). LP existe mas alinhamento keyword ↔ página precisa revisão. Institucional (R$44/conv) também.
+    <p style="margin-top:0.9rem; font-size:0.77rem; color:rgba(169,214,232,0.45); text-align:center;">
+      ⚠ Hospital Vet. → <strong style="color:rgba(169,214,232,0.7);">especialidades.hvsb.com.br</strong> (urgência 24h) — 335 cliques, só 7,25 conv. (R$159/conv). LP existe mas alinhamento keyword ↔ página precisa revisão.
     </p>
   </section>
 
-  <!-- SLIDE 4 - AGENDA -->
-  <section class="slide" data-slide="4">
-    <span class="tag outline">Agenda da Reunião</span>
-    <span class="script" style="font-size: 2.5rem; margin-bottom: 0.5rem;">o que vem por aí</span>
-    <h2>20 minutos · 4 blocos</h2>
-    <div class="agenda-grid">
-      <div class="agenda-item">
-        <div class="num">01</div>
-        <div class="text">
-          <div class="name">Auditoria de hoje</div>
-          <div class="time">8 min</div>
-        </div>
+  <!-- SLIDE 5 - O QUE CONTINUAMOS OTIMIZANDO -->
+  <section class="slide">
+    <span class="tag gold">Próximos passos</span>
+    <h2>O que continuamos otimizando</h2>
+    <div class="ajustes">
+      <div class="ajuste-item">
+        <div class="ajuste-num">1</div>
+        <div class="ajuste-txt"><strong>Campanha Hospital Veterinário</strong> — separar grupo de emergência com anúncio e LP específicos para reduzir CPA de R$159/conv</div>
       </div>
-      <div class="agenda-item">
-        <div class="num">02</div>
-        <div class="text">
-          <div class="name">O que esperar</div>
-          <div class="time">4 min</div>
-        </div>
+      <div class="ajuste-item">
+        <div class="ajuste-num">2</div>
+        <div class="ajuste-txt"><strong>Página especialidades.hvsb.com.br</strong> — otimizar para emergência: botão WhatsApp e telefone no topo, headline direto, foco mobile</div>
       </div>
-      <div class="agenda-item">
-        <div class="num">03</div>
-        <div class="text">
-          <div class="name">Próximas ações</div>
-          <div class="time">5 min</div>
-        </div>
+      <div class="ajuste-item">
+        <div class="ajuste-num">3</div>
+        <div class="ajuste-txt"><strong>Ampliar orçamento nas campanhas boas</strong> — Display (R$3/conv) e Branding (R$4/conv) estão limitados. Cada real adicional tem retorno comprovado</div>
       </div>
-      <div class="agenda-item">
-        <div class="num">04</div>
-        <div class="text">
-          <div class="name">Perguntas</div>
-          <div class="time">3 min</div>
-        </div>
+      <div class="ajuste-item done">
+        <div class="ajuste-num">✓</div>
+        <div class="ajuste-txt"><strong>PMax Maps lançado</strong> — nova campanha no Google Maps ativa, R$30/dia, Curitiba PR</div>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 3 - AUDITORIA DE PALAVRAS-CHAVE -->
-  <section class="slide" data-slide="3">
-    <span class="tag green">Auditoria · Abril 2026</span>
-    <span class="script" style="font-size: 2rem;">limpeza e expansão</span>
-    <h2>Palavras-chave · 13 ações</h2>
-    <div class="optimization-list" style="gap: 0.45rem; margin-top: 0.8rem;">
-      <div class="opt-item removed">
-        <div class="icon">🚫</div>
-        <div class="text"><strong>Removemos 2 palavras "amplas"</strong> em Hospital Vet — o Google servia o anúncio pra qualquer busca, jogando fora R$ 17/mês sem resultado</div>
-      </div>
-      <div class="opt-item removed">
-        <div class="icon">⏸️</div>
-        <div class="text"><strong>Pausamos "emergência veterinária"</strong> em Hospital Vet — QS baixo, coberta melhor pela campanha de ligações</div>
-      </div>
-      <div class="opt-item removed">
-        <div class="icon">⏸️</div>
-        <div class="text"><strong>Pausamos 3 palavras de Domicílio</strong> sem nenhuma impressão em 30 dias — estavam apenas ocupando espaço</div>
-      </div>
-      <div class="opt-item removed">
-        <div class="icon">🛑</div>
-        <div class="text"><strong>Pausamos a campanha Institucional</strong> inteira — R$ 5/dia, CPA de R$ 143. Orçamento migrado para Hospital Vet</div>
-      </div>
-      <div class="opt-item">
-        <div class="icon">✅</div>
-        <div class="text"><strong>Reativamos "veterinário curitiba"</strong> em Hospital Vet — estava pausada por engano, um dos termos de maior volume da conta</div>
-      </div>
-      <div class="opt-item">
-        <div class="icon">🚧</div>
-        <div class="text"><strong>Adicionamos "domicílio" como bloqueio</strong> em Hospital Vet e Ligações — evita que buscas de visita domiciliar caiam na campanha errada</div>
-      </div>
-      <div class="opt-item">
-        <div class="icon">➕</div>
-        <div class="text"><strong>+10 novas palavras em Hospital Vet</strong> — <em>[hospital veterinário]</em>, <em>[UTI veterinária curitiba]</em>, <em>[internação veterinária curitiba]</em>, <em>[hospital animal curitiba]</em>, <em>[hospital veterinário 24h]</em> e variações</div>
-      </div>
-      <div class="opt-item">
-        <div class="icon">➕</div>
-        <div class="text"><strong>+4 novas palavras em Ligações</strong> — <em>[veterinário 24h curitiba]</em>, <em>[emergência veterinária curitiba]</em>, "veterinário aberto agora" e urgência com cidade</div>
-      </div>
-      <div class="opt-item">
-        <div class="icon">➕</div>
-        <div class="text"><strong>+6 novas palavras em Branding</strong> — variações de nome e bairro: <em>[hvsb curitiba]</em>, <em>[hospital vet são bernardo]</em>, "veterinário são bernardo curitiba" e mais 3</div>
-      </div>
-      <div class="opt-item">
-        <div class="icon">➕</div>
-        <div class="text"><strong>+9 novas palavras em Domicílio</strong> — versões exatas e coloquiais: <em>[veterinário a domicílio curitiba]</em>, "veterinário em casa curitiba", "veterinário vem até minha casa curitiba" e mais 6</div>
-      </div>
-      <div class="opt-item changed">
-        <div class="icon">📊</div>
-        <div class="text"><strong>Resultado:</strong> R$ 148/mês liberados de budget ineficiente · <strong>29 novas palavras de alta intenção</strong> ativas em 4 campanhas</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 4 - 3 ONDAS -->
-  <section class="slide" data-slide="4">
-    <span class="tag">Bloco 02 · Resultados</span>
-    <span class="script" style="font-size: 2rem;">o que esperar</span>
-    <h2>Os efeitos em 3 etapas</h2>
-    <div class="waves">
-      <div class="wave">
-        <div class="wave-time">
-          <span class="num">24h</span>
-          <span class="label">a 3 dias</span>
-        </div>
-        <div class="wave-content">
-          <h4>Etapa 1 · Imediata</h4>
-          <p>O Google vai parar de gastar dinheiro com palavras que não traziam clientes. O investimento começa a ir mais para os anúncios que dão certo. <strong>Cada clique tende a custar de 15% a 25% menos</strong>.</p>
-        </div>
-      </div>
-      <div class="wave">
-        <div class="wave-time">
-          <span class="num">7-14</span>
-          <span class="label">dias</span>
-        </div>
-        <div class="wave-content">
-          <h4>Etapa 2 · Curto Prazo</h4>
-          <p>As 10 novas palavras de alta intenção começam a gerar impressões. O Google usa o budget que foi liberado pra testar os novos termos e aprender <strong>quais trazem mais ligações</strong>.</p>
-        </div>
-      </div>
-      <div class="wave">
-        <div class="wave-time">
-          <span class="num">1-4</span>
-          <span class="label">semanas</span>
-        </div>
-        <div class="wave-content">
-          <h4>Etapa 3 · Médio Prazo</h4>
-          <p>O hospital começa a aparecer no Google para buscas como <strong>"ultrassom veterinário curitiba"</strong>, <strong>"neurologista veterinário"</strong> e <strong>"emergência veterinária 24h"</strong>.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 5 - P0 -->
-  <section class="slide" data-slide="5">
-    <span class="tag red">Mais Urgente</span>
-    <span class="script" style="font-size: 2rem;">nas próximas</span>
-    <h2>48 horas</h2>
-    <div class="prio-grid">
-      <div class="prio-card p0">
-        <div class="prio-label">Hospital faz</div>
-        <h4>Pagar o saldo dos anúncios</h4>
-        <ul>
-          <li>Tira o aviso vermelho do painel</li>
-          <li>Evita que os anúncios parem de aparecer</li>
-          <li>Mantém o aprendizado do Google em dia</li>
-        </ul>
-      </div>
-      <div class="prio-card p0">
-        <div class="prio-label">Agência faz</div>
-        <h4>Monitorar as novas palavras-chave</h4>
-        <ul>
-          <li>Verificar se as 10 novas KWs estão gerando impressões</li>
-          <li>Conferir se o bloqueio "domicílio" está funcionando</li>
-          <li>Ajustar lances das novas KWs conforme performance</li>
-        </ul>
-      </div>
-      <div class="prio-card p0">
-        <div class="prio-label">Agência faz</div>
-        <h4>Criar mais 6 grupos de anúncios</h4>
-        <ul>
-          <li>Neurologia Veterinária</li>
-          <li>UTI Veterinária e Ultrassom</li>
-          <li>Nefrologia e Ecocardiografia</li>
-          <li>Endocrinologia e Gastroenterologia</li>
-        </ul>
-      </div>
-      <div class="prio-card p0">
-        <div class="prio-label">Hospital aprova</div>
-        <h4>Liberar criação dos novos grupos</h4>
-        <ul>
-          <li>Tudo já está pronto pra subir</li>
-          <li>Anúncios vão levar pra página certa do site</li>
-          <li>Levam só 30 minutos pra ficarem no ar</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 6 - P1 -->
-  <section class="slide" data-slide="6">
-    <span class="tag gold">Importante</span>
-    <span class="script" style="font-size: 2rem;">nas próximas</span>
-    <h2>2 a 3 semanas</h2>
-    <div class="prio-grid">
-      <div class="prio-card p1">
-        <div class="prio-label">Selo Google</div>
-        <h4>Anúncios com selo "Garantido pelo Google"</h4>
-        <ul>
-          <li>Aparece acima de todos os outros anúncios</li>
-          <li>Vocês só pagam quando alguém liga, não por clique</li>
-          <li>Aprovação do Google leva de 3 a 6 semanas</li>
-          <li>Precisa CRMV do médico, alvará e seguro do hospital</li>
-        </ul>
-      </div>
-      <div class="prio-card p1">
-        <div class="prio-label">Otimização urgente</div>
-        <h4>Campanha Hospital Vet. → especialidades.hvsb.com.br</h4>
-        <ul>
-          <li>Campanha ativa mas CPA em R$159/conv — muito alto</li>
-          <li>Keywords de "emergência" jogam pra página de especialidades — desalinhado</li>
-          <li>Página existe; precisa criar grupo separado com anúncios e LP específicos pra emergência</li>
-        </ul>
-      </div>
-      <div class="prio-card p1">
-        <div class="prio-label">Medição</div>
-        <h4>Rastrear ligações reais</h4>
-        <ul>
-          <li>O Google fornece um número de telefone que mede tudo</li>
-          <li>Conta como cliente só ligações de mais de 60 segundos</li>
-          <li>Diferencia ligação real de quem só toca e desliga</li>
-        </ul>
-      </div>
-      <div class="prio-card p1">
-        <div class="prio-label">Página de urgência</div>
-        <h4>Otimizar especialidades.hvsb.com.br</h4>
-        <ul>
-          <li>Botão de WhatsApp e telefone clicável visíveis no topo</li>
-          <li>Headline direto: "Emergência veterinária 24h em Curitiba"</li>
-          <li>Pensada pra celular — a maioria das emergências é pelo celular</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 7 - P2/P3 -->
-  <section class="slide" data-slide="7">
-    <span class="tag green">Visão de Futuro</span>
-    <span class="script" style="font-size: 2rem;">olhando pra</span>
-    <h2>Próximos meses</h2>
-    <div class="prio-grid">
-      <div class="prio-card p2">
-        <div class="prio-label">Mês 2</div>
-        <h4>Hospital com destaque no Google Maps</h4>
-        <ul>
-          <li>Pin patrocinado aparecendo no Maps quando alguém busca</li>
-          <li>Resolve a questão que o Dr. Maicon levantou</li>
-          <li>Foco nas especialidades novas que adicionamos</li>
-        </ul>
-      </div>
-      <div class="prio-card p2">
-        <div class="prio-label">Mês 2</div>
-        <h4>Anúncios pra clientes parecidos</h4>
-        <ul>
-          <li>Vamos usar a lista de clientes do hospital</li>
-          <li>O Google encontra outras pessoas com perfil parecido</li>
-          <li>Anúncios viram super direcionados</li>
-        </ul>
-      </div>
-      <div class="prio-card p3">
-        <div class="prio-label">Mês 3</div>
-        <h4>Definir custo por cliente</h4>
-        <ul>
-          <li>Quando tivermos dados confiáveis suficientes</li>
-          <li>Falamos pro Google: "queremos cliente custando X reais"</li>
-          <li>Resultado fica mais previsível mês a mês</li>
-        </ul>
-      </div>
-      <div class="prio-card p3">
-        <div class="prio-label">Mês 3+</div>
-        <h4>Anúncios em todos os lugares</h4>
-        <ul>
-          <li>Buscas no Google + Maps + YouTube + sites e apps</li>
-          <li>Tudo gerenciado por uma campanha só</li>
-          <li>Só liga depois que a medição estiver bem rodada</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 8 - PERGUNTAS -->
-  <section class="slide" data-slide="8">
-    <span class="tag">Bloco 04 · Perguntas</span>
-    <span class="script" style="font-size: 2rem;">precisamos saber</span>
-    <h2>Pra seguir, preciso da ajuda de vocês</h2>
-    <div class="question-list">
-      <div class="question-item">
-        <div class="num">01</div>
-        <div class="text">Das especialidades que adicionamos nos anúncios — Neurologia, UTI, Ultrassom, Ecocardiografia — qual tem mais disponibilidade de agenda agora? Assim priorizamos os grupos de anúncios que vamos criar.</div>
-      </div>
-      <div class="question-item">
-        <div class="num">02</div>
-        <div class="text">A campanha de domicílio tem folga de agenda? Com o bloqueio que colocamos, os anúncios vão parar de aparecer pra quem busca visita domiciliar — mas se houver espaço, podemos criar uma campanha separada só pra isso.</div>
-      </div>
-      <div class="question-item">
-        <div class="num">03</div>
-        <div class="text">Quanto custa, em média, cada tipo de atendimento? (Consulta normal, especialista, urgência, cirurgia, internação) — pra entendermos quanto o Google pode investir pra trazer cada cliente.</div>
-      </div>
-      <div class="question-item">
-        <div class="num">04</div>
-        <div class="text">A recepção dá conta se aumentar bastante o volume de ligações e mensagens nas especialidades novas? Antes de investir mais, queremos garantir que o atendimento aguenta.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 9 - ENCERRAMENTO -->
-  <section class="slide" data-slide="9">
+  <!-- SLIDE 6 - ENCERRAMENTO -->
+  <section class="slide">
     <div class="closing">
-      <span class="tag green">Pra Fechar</span>
-      <span class="script-accent">resumindo</span>
-      <h2>em uma frase</h2>
+      <span class="tag green">Resumo</span>
+      <span class="script-accent">o mês em uma linha</span>
+      <h2>Dobro de resultados,<br>metade do custo</h2>
       <p>
-        A conta ficou mais limpa, mais focada e<br><strong>com R$ 148/mês liberados</strong> de budget que não trazia nenhum cliente.
+        Mesmo investimento de março. <strong>107% mais conversões.<br>Custo por conversão caiu 49%.</strong>
       </p>
-      <p style="color: var(--blue-light);">
-        10 novas palavras de alta intenção entraram.<br>
-        <span style="color: var(--green); font-weight: 700;">O Google agora trabalha com munição melhor.</span>
-      </p>
-      <p style="margin-top: 2.5rem; font-size: 1.4rem;">
-        Nas próximas semanas, esperamos<br>
-        <strong>mais ligações chegando</strong> e<br>
-        <strong>custo menor por cada cliente novo</strong>.
+      <p style="color:rgba(169,214,232,0.7); font-size:1rem;">
+        As campanhas boas estão limitadas pelo orçamento — sinal claro de que há espaço para crescer.
       </p>
       <div class="signature">Sigma · HVSB · Curitiba · 2026</div>
     </div>
@@ -1404,12 +378,11 @@ p {
 </div>
 
 <div class="slide-counter">
-  <span class="current" id="current">01</span> · <span id="total">17</span>
+  <span class="current" id="current">01</span> · <span id="total">06</span>
 </div>
-
 <div class="nav-controls">
-  <button class="nav-btn" id="prev" aria-label="Slide anterior">‹</button>
-  <button class="nav-btn" id="next" aria-label="Próximo slide">›</button>
+  <button class="nav-btn" id="prev">‹</button>
+  <button class="nav-btn" id="next">›</button>
 </div>
 
 <script>
@@ -1441,21 +414,18 @@ function go(idx) {
 prevBtn.addEventListener('click', () => go(current - 1));
 nextBtn.addEventListener('click', () => go(current + 1));
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
-  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                    { e.preventDefault(); go(current - 1); }
   if (e.key === 'Home') go(0);
-  if (e.key === 'End') go(total - 1);
+  if (e.key === 'End')  go(total - 1);
 });
 
 let touchStartX = 0;
 document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
 document.addEventListener('touchend', e => {
   const diff = e.changedTouches[0].screenX - touchStartX;
-  if (Math.abs(diff) > 50) {
-    if (diff < 0) go(current + 1);
-    else go(current - 1);
-  }
+  if (Math.abs(diff) > 50) diff < 0 ? go(current + 1) : go(current - 1);
 });
 
 progressEl.style.width = (1 / total * 100) + '%';
