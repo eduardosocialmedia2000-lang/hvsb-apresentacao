@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Otimizações HVSB · Junho 2026 | Sigma</title>
+<link rel="icon" type="image/svg+xml" href="https://static.wixstatic.com/shapes/167cba_c76d768559744f90b364541c6ff3aa51.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Allura&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy-deep: #0A3D5F;
+  --navy:      #0E5C8C;
+  --blue:      #1B6FB8;
+  --blue-light:#A9D6E8;
+  --gold:      #D4A340;
+  --gold-light:#E8C77B;
+  --white:     #FFFFFF;
+  --red:       #C44545;
+  --green:     #4A9B7E;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white); }
+
+.deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+.slide {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 4rem 5rem;
+  opacity: 0; transform: translateX(50px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 60%, #061F33 100%);
+}
+.slide.active  { opacity: 1; transform: translateX(0); pointer-events: all; }
+.slide.prev    { transform: translateX(-50px); }
+
+.slide::before {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(169,214,232,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: -0.01em; line-height: 1.05; text-transform: uppercase; }
+h1 { font-size: clamp(2.8rem, 5.5vw, 5rem); }
+h2 { font-size: clamp(1.6rem, 3.5vw, 3rem); margin-bottom: 1.2rem; }
+
+.script { font-family: 'Allura', cursive; text-transform: none; font-weight: 400; color: var(--blue-light); }
+
+.tag {
+  display: inline-block; padding: 0.35rem 0.9rem;
+  background: var(--blue); color: white; border-radius: 2px;
+  font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 1.2rem;
+  border: 1px solid var(--blue-light);
+}
+.tag.gold  { background: var(--gold); color: var(--navy-deep); border-color: var(--gold-light); }
+.tag.green { background: var(--green); border-color: rgba(255,255,255,0.3); }
+.tag.red   { background: var(--red); border-color: rgba(255,255,255,0.3); }
+
+/* CAPA */
+.slide-cover { text-align: center; }
+.slide-cover h1 {
+  background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  font-weight: 900; margin-bottom: 0.5rem;
+}
+.script-accent { font-family: 'Allura', cursive; font-size: clamp(2.5rem,5vw,4rem); color: var(--blue-light); display: block; margin-bottom: 0.5rem; }
+.subtitle { font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--blue-light); font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 3rem; margin-top: 0.8rem; }
+
+.meta { display: flex; gap: 4rem; justify-content: center; margin-top: 3rem; opacity: 0.85; }
+.meta > div { text-align: center; }
+.meta .label { font-family: 'Montserrat', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.25em; font-weight: 600; margin-bottom: 0.4rem; color: var(--gold); }
+.meta .value { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.9rem; }
+
+/* KPI CARDS */
+.kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.2rem; max-width: 1100px; width: 100%; margin-top: 1.5rem; }
+.kpi-card { background: rgba(169,214,232,0.06); border: 1px solid rgba(169,214,232,0.18); padding: 2rem 1.5rem; border-radius: 4px; text-align: center; }
+.kpi-card .num { font-family: 'Montserrat', sans-serif; font-size: 3.8rem; font-weight: 900; line-height: 1; }
+.kpi-card .num.blue  { color: var(--blue-light); }
+.kpi-card .num.green { color: var(--green); }
+.kpi-card .num.gold  { color: var(--gold); }
+.kpi-card .lbl { margin-top: 0.6rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.6); font-weight: 600; }
+.kpi-card .delta { margin-top: 0.4rem; font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--green); }
+.kpi-card .delta.neg { color: var(--red); }
+
+/* TABELA */
+.camp-table { width: 100%; border-collapse: collapse; font-family: 'Inter', sans-serif; font-size: 0.78rem; }
+.camp-table th { text-align: left; padding: 0.5rem 0.6rem; color: var(--blue-light); font-family: 'Montserrat', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid rgba(169,214,232,0.3); }
+.camp-table th.r { text-align: right; }
+.camp-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.camp-table td.r { text-align: right; }
+.camp-table tr:hover td { background: rgba(169,214,232,0.04); }
+.badge-ok       { background: rgba(74,155,126,0.15); border: 1px solid rgba(74,155,126,0.4); color: var(--green); font-size: 0.58rem; padding: 0.12rem 0.4rem; border-radius: 2px; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.badge-limited  { background: rgba(212,163,64,0.15); border: 1px solid rgba(212,163,64,0.4); color: var(--gold); font-size: 0.58rem; padding: 0.12rem 0.4rem; border-radius: 2px; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.badge-bad      { background: rgba(196,69,69,0.15); border: 1px solid rgba(196,69,69,0.4); color: var(--red); font-size: 0.58rem; padding: 0.12rem 0.4rem; border-radius: 2px; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.badge-new      { background: rgba(169,214,232,0.15); border: 1px solid rgba(169,214,232,0.4); color: var(--blue-light); font-size: 0.58rem; padding: 0.12rem 0.4rem; border-radius: 2px; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.good { color: var(--green); font-weight: 700; }
+.bad  { color: var(--red);   font-weight: 700; }
+.dim  { color: rgba(169,214,232,0.45); }
+
+/* AÇÕES EXECUTADAS */
+.acao-list { display: flex; flex-direction: column; gap: 0.8rem; max-width: 1050px; width: 100%; margin-top: 1rem; }
+.acao-item { display: flex; align-items: flex-start; gap: 1.2rem; background: rgba(169,214,232,0.05); border: 1px solid rgba(169,214,232,0.12); border-left: 3px solid var(--green); padding: 1rem 1.4rem; border-radius: 4px; }
+.acao-item.warn { border-left-color: var(--gold); }
+.acao-item.info { border-left-color: var(--blue-light); }
+.acao-check { font-size: 1.2rem; margin-top: 0.1rem; min-width: 24px; }
+.acao-txt { font-size: 0.88rem; color: rgba(255,255,255,0.88); line-height: 1.55; }
+.acao-txt strong { color: var(--blue-light); }
+.acao-txt .green { color: var(--green); font-weight: 700; }
+.acao-txt .gold  { color: var(--gold); font-weight: 700; }
+.acao-txt .red   { color: var(--red); font-weight: 700; }
+
+/* IMPACTO */
+.impacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 1050px; width: 100%; margin-top: 1.2rem; }
+.impacto-card { background: rgba(169,214,232,0.05); border: 1px solid rgba(169,214,232,0.12); padding: 1.4rem 1.6rem; border-radius: 4px; }
+.impacto-card .ic-title { font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.6rem; }
+.impacto-card .ic-num { font-family: 'Montserrat', sans-serif; font-size: 2.4rem; font-weight: 900; color: var(--green); line-height: 1; margin-bottom: 0.3rem; }
+.impacto-card .ic-num.blue { color: var(--blue-light); }
+.impacto-card p { font-size: 0.82rem; color: rgba(255,255,255,0.75); line-height: 1.55; }
+
+/* PRÓXIMOS PASSOS */
+.proximos { display: flex; flex-direction: column; gap: 0.7rem; max-width: 1000px; width: 100%; margin-top: 1rem; }
+.proximo-item { display: flex; align-items: center; gap: 1.2rem; padding: 0.85rem 1.3rem; background: rgba(169,214,232,0.04); border: 1px solid rgba(169,214,232,0.1); border-radius: 4px; }
+.proximo-num { font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 700; background: rgba(212,163,64,0.2); color: var(--gold); padding: 0.25rem 0.55rem; border-radius: 2px; min-width: 30px; text-align: center; }
+.proximo-txt { font-size: 0.88rem; color: rgba(255,255,255,0.85); line-height: 1.5; }
+.proximo-txt strong { color: var(--white); }
+.proximo-txt span.dim { color: rgba(169,214,232,0.5); font-size: 0.78rem; margin-left: 0.4rem; }
+
+/* ENCERRAMENTO */
+.closing { text-align: center; max-width: 800px; }
+.closing .script-accent { font-family: 'Allura', cursive; font-size: clamp(2.5rem,5vw,4rem); color: var(--blue-light); display: block; margin-bottom: 0.5rem; }
+.closing h2 { background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2rem; }
+.closing p { font-size: 1.05rem; line-height: 1.8; color: rgba(255,255,255,0.88); margin-bottom: 1rem; }
+.closing p strong { color: var(--gold); }
+.signature { margin-top: 2.5rem; font-family: 'Montserrat', sans-serif; font-size: 0.78rem; color: var(--blue-light); letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; }
+.signature::before, .signature::after { content: '◆'; margin: 0 1rem; color: var(--gold); opacity: 0.6; }
+
+/* NAV */
+.progress-bar { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: rgba(169,214,232,0.1); z-index: 99; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 50%, var(--gold) 100%); width: 0%; transition: width 0.4s ease; }
+.deck-logo { position: fixed; top: 1.5rem; right: 2rem; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; color: rgba(169,214,232,0.45); letter-spacing: 0.3em; text-transform: uppercase; z-index: 99; font-weight: 600; }
+.deck-logo .gold { color: var(--gold); }
+.nav-controls { position: fixed; bottom: 2rem; right: 2rem; display: flex; gap: 0.5rem; z-index: 100; }
+.nav-btn { background: rgba(169,214,232,0.1); border: 1px solid var(--blue-light); width: 46px; height: 46px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; font-weight: 700; transition: all 0.2s; font-family: 'Montserrat', sans-serif; }
+.nav-btn:hover { background: var(--blue-light); color: var(--navy-deep); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.slide-counter { position: fixed; bottom: 2rem; left: 2rem; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: rgba(169,214,232,0.45); letter-spacing: 0.2em; z-index: 100; font-weight: 600; }
+.slide-counter .current { color: var(--gold); font-weight: 700; }
+
+@media (max-width: 768px) {
+  .slide { padding: 2rem 1.5rem; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .impacto-grid { grid-template-columns: 1fr; }
+  .nav-controls { bottom: 1rem; right: 1rem; }
+  .slide-counter { bottom: 1rem; left: 1rem; }
+  .meta { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<div class="deck-logo">Sigma <span class="gold">×</span> HVSB</div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 - CAPA -->
+  <section class="slide slide-cover active">
+    <span class="script-accent">otimizações &</span>
+    <h1>Google Ads HVSB</h1>
+    <div class="subtitle">Junho 2026 · Call de Resultados · Curitiba/PR</div>
+    <div class="meta">
+      <div><div class="label">Cliente</div><div class="value">Hospital Veterinário<br>São Bernardo</div></div>
+      <div><div class="label">Data</div><div class="value">18 de Junho<br>de 2026</div></div>
+      <div><div class="label">Conta</div><div class="value">192-048-4711<br>Curitiba/PR</div></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 - ESTADO ATUAL DA CONTA (JUN) -->
+  <section class="slide">
+    <span class="tag gold">Junho 2026 · 1 a 18/jun · Dados Parciais</span>
+    <h2>Conta em ritmo saudável — 278 contatos em 18 dias</h2>
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="num blue">278</div>
+        <div class="lbl">Conversões MTD</div>
+        <div class="delta">Ritmo: ~465/mês</div>
+      </div>
+      <div class="kpi-card">
+        <div class="num gold" style="font-size:3rem;">R$8,85</div>
+        <div class="lbl">Custo / Conversão</div>
+        <div class="delta">vs R$8,30 em maio</div>
+      </div>
+      <div class="kpi-card">
+        <div class="num gold" style="font-size:2.8rem;">R$2,46<span style="font-size:1.7rem;">mil</span></div>
+        <div class="lbl">Investimento MTD</div>
+        <div class="delta">Teto: R$4.500/mês</div>
+      </div>
+      <div class="kpi-card">
+        <div class="num blue">R$143</div>
+        <div class="lbl">Orçamento/Dia</div>
+        <div class="delta">5 campanhas ativas</div>
+      </div>
+    </div>
+    <p style="margin-top:1.2rem; font-size:0.82rem; color:rgba(169,214,232,0.55); text-align:center;">
+      <strong style="color:var(--green);">CPA de R$8,85</strong> — segundo mês consecutivo abaixo de R$9. Conta estável e convertendo bem.<br>
+      Hoje executamos 4 otimizações estratégicas que vão melhorar ainda mais os resultados de julho em diante.
+    </p>
+  </section>
+
+  <!-- SLIDE 3 - O QUE ENCONTRAMOS NA AUDITORIA -->
+  <section class="slide">
+    <span class="tag red">Auditoria · Problemas Encontrados</span>
+    <h2>4 problemas críticos identificados hoje</h2>
+    <div class="acao-list">
+      <div class="acao-item warn">
+        <span class="acao-check">🔴</span>
+        <div class="acao-txt"><strong>CPA desejado em R$50 na campanha Hospital Veterinário</strong> — a meta estava 4× acima do CPA real (R$11,94). O algoritmo aceitava desperdício sem otimizar para eficiência.</div>
+      </div>
+      <div class="acao-item warn">
+        <span class="acao-check">🟡</span>
+        <div class="acao-txt"><strong>Especialidades Veterinárias sem CPA alvo definido</strong> — 92 conversões/mês com CPA R$9,21 mas sem meta. Smart Bidding operando sem direção clara, deixando margem de melhoria na mesa.</div>
+      </div>
+      <div class="acao-item info">
+        <span class="acao-check">🔵</span>
+        <div class="acao-txt"><strong>IS médio de 48%</strong> — a conta aparece em menos da metade das buscas disponíveis. 4 das 5 campanhas ativas estão <span class="gold">limitadas por orçamento</span>.</div>
+      </div>
+      <div class="acao-item info">
+        <span class="acao-check">🔵</span>
+        <div class="acao-txt"><strong>"Ver Rota" como conversão</strong> — verificado: está em 0 campanhas ativas. <span class="green">Não estava contaminando o algoritmo</span>. Sem impacto negativo.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 - AÇÕES EXECUTADAS HOJE -->
+  <section class="slide">
+    <span class="tag green">18 de Junho 2026 · Executado Agora</span>
+    <h2>O que fizemos hoje — ao vivo</h2>
+    <div class="acao-list">
+      <div class="acao-item">
+        <span class="acao-check">✅</span>
+        <div class="acao-txt">
+          <strong>tCPA R$11 configurado — Especialidades Veterinárias</strong><br>
+          Campanha com 92 conv/mês e CPA R$9,21 agora tem meta clara: <span class="green">R$11 (20% de margem sobre o histórico)</span>. O algoritmo passa a otimizar com direção definida.
+        </div>
+      </div>
+      <div class="acao-item">
+        <span class="acao-check">✅</span>
+        <div class="acao-txt">
+          <strong>tCPA corrigido de R$50 → R$14 — Hospital Veterinário</strong><br>
+          <span class="red">Erro crítico corrigido:</span> a meta estava em R$50 — mais de 4× o CPA real. Agora: <span class="green">R$14</span>, alinhado com o histórico de R$11,94. Essa correção sozinha deve reduzir o CPA da campanha nas próximas semanas.
+        </div>
+      </div>
+      <div class="acao-item">
+        <span class="acao-check">✅</span>
+        <div class="acao-txt">
+          <strong>Campanha "Hospital Vet Call" — confirmado removida</strong><br>
+          A campanha que consumia R$170/mês com CPA de R$169 (1 única conversão) já não existe na conta. Verba liberada para campanhas eficientes.
+        </div>
+      </div>
+      <div class="acao-item">
+        <span class="acao-check">✅</span>
+        <div class="acao-txt">
+          <strong>Auditoria completa de conversões e campanhas</strong><br>
+          Verificamos todas as ações de conversão, status de campanhas, estratégias de lance e Impression Share. Conta mapeada e otimizada.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 - IMPACTO ESPERADO -->
+  <section class="slide">
+    <span class="tag gold">Impacto Esperado · Próximas 2–4 Semanas</span>
+    <h2>O que muda com as otimizações de hoje</h2>
+    <div class="impacto-grid">
+      <div class="impacto-card">
+        <div class="ic-title">Hospital Veterinário — CPA desejado</div>
+        <div class="ic-num">R$14</div>
+        <p>Era R$50. Com a meta correta, o Google Ads vai parar de aceitar conversões caras e otimizar para trazer contatos dentro do orçamento com mais eficiência. Estimativa: <strong style="color:var(--green);">+15–25% mais conversões</strong> na campanha sem aumentar custo.</p>
+      </div>
+      <div class="impacto-card">
+        <div class="ic-title">Especialidades — tCPA ativado</div>
+        <div class="ic-num blue">R$11</div>
+        <p>Com 92 conversões/mês, o algoritmo tem dados suficientes para trabalhar com meta. Esperamos <strong style="color:var(--gold);">estabilidade no CPA</strong> e melhor distribuição de impressões ao longo do dia — menos picos de gasto pela manhã.</p>
+      </div>
+      <div class="impacto-card">
+        <div class="ic-title">Período de Aprendizado</div>
+        <div class="ic-num blue" style="font-size:1.8rem;">7–14 dias</div>
+        <p>Mudanças de estratégia de lance entram em <strong>learning period</strong>. Nas próximas 1–2 semanas o volume pode oscilar. <strong style="color:var(--gold);">Não fazer outras alterações nesse período.</strong> Avaliar resultados a partir de 1/julho.</p>
+      </div>
+      <div class="impacto-card">
+        <div class="ic-title">Meta para Julho</div>
+        <div class="ic-num" style="font-size:1.8rem; color:var(--gold);">CPA &lt; R$8</div>
+        <p>Com os CPAs alvo de R$11 e R$14 definidos (acima do histórico como margem de segurança), o algoritmo vai tender a converter abaixo dessas metas. Projeção conservadora para julho: <strong style="color:var(--green);">CPA entre R$7,50 e R$8,50</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 - CAMPANHAS ATUAIS -->
+  <section class="slide">
+    <span class="tag">Campanhas Ativas · Junho 2026 (1–18/jun)</span>
+    <h2>5 campanhas · R$143/dia · CPA médio R$8,85</h2>
+    <table class="camp-table" style="max-width:1100px; margin-top:0.6rem;">
+      <thead>
+        <tr>
+          <th>Campanha</th>
+          <th class="r">Conv</th>
+          <th class="r">CPA</th>
+          <th class="r">Custo</th>
+          <th class="r">IS</th>
+          <th>Lance</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Display · Remarketing · Leads</td>
+          <td class="r good">136</td>
+          <td class="r good">R$3,07</td>
+          <td class="r">R$418</td>
+          <td class="r dim">—</td>
+          <td><span class="dim">tCPA</span></td>
+          <td><span class="badge-limited">Limitada</span></td>
+        </tr>
+        <tr>
+          <td>Especialidades Veterinárias</td>
+          <td class="r">48</td>
+          <td class="r">R$13,50</td>
+          <td class="r">R$658</td>
+          <td class="r bad">~38%</td>
+          <td><span class="badge-new">tCPA R$11 ✓</span></td>
+          <td><span class="badge-limited">Limitada</span></td>
+        </tr>
+        <tr>
+          <td>Hospital Veterinário</td>
+          <td class="r">34</td>
+          <td class="r">R$16,43</td>
+          <td class="r">R$559</td>
+          <td class="r bad">~41%</td>
+          <td><span class="badge-new">tCPA R$14 ✓</span></td>
+          <td><span class="badge-limited">Limitada</span></td>
+        </tr>
+        <tr>
+          <td>Branding</td>
+          <td class="r good">24</td>
+          <td class="r good">R$8,92</td>
+          <td class="r">R$218</td>
+          <td class="r good">~84%</td>
+          <td><span class="dim">tROAS</span></td>
+          <td><span class="badge-ok">Aprendendo</span></td>
+        </tr>
+        <tr>
+          <td>Institucional HVSB</td>
+          <td class="r">3</td>
+          <td class="r bad">R$42,07</td>
+          <td class="r">R$126</td>
+          <td class="r">~60%</td>
+          <td><span class="dim">Max Conv</span></td>
+          <td><span class="badge-limited">Limitada</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.9rem; font-size:0.78rem; color:rgba(169,214,232,0.5); text-align:center;">
+      <strong style="color:var(--gold);">Display com CPA R$3,07</strong> é o motor principal — 136 de 278 conversões do mês. Campanhas de Search agora com metas de CPA definidas após otimização de hoje.
+    </p>
+  </section>
+
+  <!-- SLIDE 7 - PRÓXIMOS PASSOS -->
+  <section class="slide">
+    <span class="tag gold">Próximos Passos · Julho 2026</span>
+    <h2>O que vem a seguir</h2>
+    <div class="proximos">
+      <div class="proximo-item">
+        <span class="proximo-num">1</span>
+        <div class="proximo-txt"><strong>Aguardar learning period (7–14 dias)</strong> — não alterar lances nem orçamentos nas campanhas Especialidades e Hospital até 2/julho. O algoritmo precisa de estabilidade para recalibrar.<span class="dim">→ até 02/jul</span></div>
+      </div>
+      <div class="proximo-item">
+        <span class="proximo-num">2</span>
+        <div class="proximo-txt"><strong>Avaliar tCPA Domicílio</strong> — campanha com CPA histórico R$13,70. Quando o learning period das Search terminar, migrar também para tCPA R$16.<span class="dim">→ semana de 07/jul</span></div>
+      </div>
+      <div class="proximo-item">
+        <span class="proximo-num">3</span>
+        <div class="proximo-txt"><strong>Upload lista Customer Match 2026</strong> — com 278+ conversões/mês, criar e subir lista de clientes 2026 para alimentar o Smart Bidding com sinal de qualidade atualizado.<span class="dim">→ semana de 07/jul</span></div>
+      </div>
+      <div class="proximo-item">
+        <span class="proximo-num">4</span>
+        <div class="proximo-txt"><strong>Avaliar LSA — Local Services Ads</strong> — canal que aparece acima dos anúncios normais, cobrança só por contato. Verificar elegibilidade do HVSB para veterinária em Curitiba.<span class="dim">→ julho</span></div>
+      </div>
+      <div class="proximo-item">
+        <span class="proximo-num">5</span>
+        <div class="proximo-txt"><strong>Revisar Institucional</strong> — CPA de R$42 é ineficiente. Avaliar pausar ou consolidar com outra campanha após julho.<span class="dim">→ análise em agosto</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 - ENCERRAMENTO -->
+  <section class="slide">
+    <div class="closing">
+      <span class="script-accent">em resumo</span>
+      <h2>Conta corrigida e otimizada para julho</h2>
+      <p>Identificamos e corrigimos hoje um <strong>erro crítico de CPA</strong> — a campanha Hospital Veterinário estava com meta de R$50 enquanto o CPA real era R$11,94. Esse ajuste sozinho vai melhorar a eficiência da campanha nas próximas semanas.</p>
+      <p>Com os dois tCPAs definidos (R$11 e R$14), o <strong>Smart Bidding agora tem metas claras</strong> para otimizar. A expectativa é chegar a julho com CPA abaixo de R$8 — mantendo o volume crescente de contatos.</p>
+      <p>A conta está no melhor momento histórico. O próximo passo é <strong>aguardar o aprendizado</strong> e avaliar resultados completos na reunião de julho.</p>
+      <div class="signature">Sigma Agência de Marketing</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="slide-counter">
+  <span class="current" id="current">01</span> · <span id="total">08</span>
+</div>
+<div class="nav-controls">
+  <button class="nav-btn" id="prev">‹</button>
+  <button class="nav-btn" id="next">›</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const currentEl = document.getElementById('current');
+const totalEl = document.getElementById('total');
+const progressEl = document.getElementById('progress');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+let current = 0;
+
+totalEl.textContent = String(total).padStart(2, '0');
+
+function go(idx) {
+  if (idx < 0 || idx >= total) return;
+  slides[current].classList.remove('active');
+  if (idx < current) slides[current].classList.add('prev');
+  else slides[current].classList.remove('prev');
+  current = idx;
+  slides[current].classList.add('active');
+  slides[current].classList.remove('prev');
+  currentEl.textContent = String(current + 1).padStart(2, '0');
+  progressEl.style.width = ((current + 1) / total * 100) + '%';
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current === total - 1;
+}
+
+prevBtn.addEventListener('click', () => go(current - 1));
+nextBtn.addEventListener('click', () => go(current + 1));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                    { e.preventDefault(); go(current - 1); }
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End')  go(total - 1);
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+document.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(diff) > 50) diff < 0 ? go(current + 1) : go(current - 1);
+});
+
+progressEl.style.width = (1 / total * 100) + '%';
+prevBtn.disabled = true;
+</script>
+
+</body>
+</html>
